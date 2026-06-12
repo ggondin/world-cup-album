@@ -662,40 +662,212 @@
                }
           }
 
-          @media print {
+          .print-only {
+               display: none;
+          }
 
-               .author-card {
-                    display: none !important;
+          @media print {
+               @page {
+                    size: A4 portrait;
+                    margin: 8mm;
                }
 
-               header,
-               .dupes-panel,
-               .mobile-tools,
-               .toolbar,
-               .legend,
-               .toggle-section {
-                    display: none !important;
+               * {
+                    -webkit-print-color-adjust: exact !important;
+                    print-color-adjust: exact !important;
                }
 
                body {
-                    background: #fff;
+                    background: #fff !important;
+                    color: #000 !important;
+                    min-height: auto;
+                    font-family: Arial, Helvetica, sans-serif;
+               }
+
+               header,
+               main,
+               .modal {
+                    display: none !important;
+               }
+
+               .print-only {
+                    display: block !important;
+               }
+
+               .print-page {
+                    width: 100%;
                     color: #000;
                }
 
-               .section {
-                    break-inside: avoid;
-                    background: #fff;
-                    color: #000;
-                    border-color: #ddd;
+               .print-head {
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: space-between;
+                    gap: 10px;
+                    padding-bottom: 6px;
+                    border-bottom: 1px solid #111;
+                    margin-bottom: 6px;
                }
 
-               .section.collapsed .grid {
+               .print-title {
+                    font-size: 15px;
+                    font-weight: 900;
+                    margin: 0 0 2px;
+               }
+
+               .print-subtitle {
+                    font-size: 8px;
+                    margin: 0;
+                    color: #333;
+               }
+
+               .print-author {
+                    text-align: right;
+                    font-size: 8px;
+                    line-height: 1.25;
+               }
+
+               .print-summary {
                     display: grid;
+                    grid-template-columns: repeat(5, 1fr);
+                    gap: 4px;
+                    margin: 6px 0;
                }
 
-               .sticker {
-                    color: #000;
-                    border-color: #ccc;
+               .print-stat {
+                    border: 1px solid #bbb;
+                    border-radius: 4px;
+                    padding: 3px 4px;
+                    font-size: 8px;
+               }
+
+               .print-stat strong {
+                    display: block;
+                    font-size: 12px;
+                    line-height: 1;
+               }
+
+               .print-legend {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                    font-size: 8px;
+                    margin: 4px 0 6px;
+               }
+
+               .print-dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 2px;
+                    display: inline-block;
+                    border: 1px solid #777;
+                    vertical-align: -1px;
+                    margin-right: 2px;
+               }
+
+               .print-dot.have {
+                    background: #16a34a;
+               }
+
+               .print-dot.missing {
+                    background: #dc2626;
+               }
+
+               .print-dot.blank {
+                    background: #fff;
+               }
+
+               .print-dot.dupe {
+                    background: #facc15;
+               }
+
+               .print-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    table-layout: fixed;
+                    font-size: 7.2px;
+               }
+
+               .print-table th,
+               .print-table td {
+                    border: 1px solid #cfcfcf;
+                    padding: 2px;
+                    text-align: center;
+                    vertical-align: middle;
+                    height: 18px;
+                    overflow: hidden;
+               }
+
+               .print-table th {
+                    background: #f1f5f9;
+                    font-weight: 900;
+               }
+
+               .print-country {
+                    width: 78px;
+                    text-align: left !important;
+                    font-weight: 900;
+                    background: #f8fafc;
+               }
+
+               .print-cell {
+                    font-weight: 800;
+                    border-radius: 2px;
+                    position: relative;
+               }
+
+               .print-cell.have {
+                    background: #16a34a !important;
+                    color: #fff !important;
+               }
+
+               .print-cell.missing {
+                    background: #dc2626 !important;
+                    color: #fff !important;
+               }
+
+               .print-cell.blank {
+                    background: #fff !important;
+                    color: #111 !important;
+               }
+
+               .print-cell .rep {
+                    display: inline-block;
+                    margin-left: 1px;
+                    padding: 0 2px;
+                    border-radius: 2px;
+                    background: #facc15 !important;
+                    color: #000 !important;
+                    font-size: 6px;
+                    font-weight: 900;
+                    line-height: 1.2;
+               }
+
+               .print-dupes {
+                    margin-top: 6px;
+                    border: 1px solid #bbb;
+                    border-radius: 4px;
+                    padding: 4px;
+                    break-inside: avoid;
+               }
+
+               .print-dupes h3 {
+                    margin: 0 0 3px;
+                    font-size: 10px;
+               }
+
+               .print-dupes-list {
+                    font-size: 8px;
+                    line-height: 1.45;
+               }
+
+               .print-footer {
+                    margin-top: 6px;
+                    padding-top: 4px;
+                    border-top: 1px solid #ddd;
+                    font-size: 7px;
+                    color: #444;
+                    text-align: center;
                }
           }
      </style>
@@ -707,12 +879,14 @@
                <div class="header-top">
                     <div class="header-main">
                          <h1>Controle de Figurinhas da Copa 2026</h1>
-                         <p class="subtitle">Use o botão de cada país para abrir/fechar a seção. Em cada figurinha, marque se você já tem ou não.
-                              A quantidade de repetidas é ajustada apenas pelos botões − e +.</p>
+                         <p class="subtitle">Use o botão de cada país para abrir/fechar a seção. Em cada figurinha,
+                              marque se você já tem ou não.
+                              A quantidade de repetidas é ajustada apenas pelos botões − e +. O botão de imprimir usa
+                              uma versão compacta.</p>
                     </div>
 
-                    <a class="author-card" href="https://www.linkedin.com/in/gabriel-gondin/" target="_blank" rel="noopener noreferrer"
-                         title="Criado por Gabriel Gondin">
+                    <a class="author-card" href="https://www.linkedin.com/in/gabriel-gondin/" target="_blank"
+                         rel="noopener noreferrer" title="Criado por Gabriel Gondin">
                          <!-- Para usar uma foto real, troque o conteúdo abaixo por:
                               <span class="author-img"><img src="sua-foto.jpg" alt="Gabriel Gondin"></span>
                          -->
@@ -735,7 +909,7 @@
                     </select>
                     <button class="btn-blue" onclick="openExport()">Exportar</button>
                     <button class="btn-green" onclick="openImport()">Importar</button>
-                    <button onclick="window.print()">Imprimir</button>
+                    <button onclick="printCompact()">Imprimir compacto</button>
                     <button class="btn-red" onclick="resetAll()">Zerar</button>
                </div>
           </div>
@@ -783,6 +957,9 @@
                </div>
           </div>
      </div>
+
+
+     <div id="printArea" class="print-only"></div>
 
      <script>
           const SECTIONS = [
@@ -1058,6 +1235,108 @@
                };
                document.getElementById('dataModal').classList.add('open');
           }
+
+
+          function printCompact() {
+               renderPrintView();
+               setTimeout(() => window.print(), 80);
+          }
+
+          function renderPrintView() {
+               const allCodes = SECTIONS.flatMap(getCodes);
+               const have = allCodes.filter(code => state[code]?.status === 'have').length;
+               const missing = allCodes.filter(code => state[code]?.status === 'missing').length;
+               const dupes = allCodes.filter(code => Number(state[code]?.qty) > 0);
+               const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
+               const today = new Date().toLocaleDateString('pt-BR');
+
+               const maxCols = 20;
+               const numberHeader = Array.from({ length: maxCols }, (_, i) => `<th>${i + 1}</th>`).join('');
+
+               const rows = SECTIONS.map(section => {
+                    const codes = getCodes(section);
+
+                    const cells = Array.from({ length: maxCols }, (_, index) => {
+                         const code = codes[index];
+
+                         if (!code) return '<td></td>';
+
+                         const data = state[code] || { status: '', qty: 0 };
+                         const statusClass = data.status === 'have' ? 'have' : data.status === 'missing' ? 'missing' : 'blank';
+                         const shortCode = section.code === 'FWC'
+                              ? code.replace('FWC', 'F')
+                              : code.replace(section.code, '');
+
+                         const rep = Number(data.qty || 0) > 0 ? `<span class="rep">R${data.qty}</span>` : '';
+
+                         return `<td class="print-cell ${statusClass}">${shortCode}${rep}</td>`;
+                    }).join('');
+
+                    return `
+                         <tr>
+                              <td class="print-country">${section.code}<br><small>${section.name}</small></td>
+                              ${cells}
+                         </tr>
+                    `;
+               }).join('');
+
+               const dupesText = dupes.length
+                    ? dupes.map(code => `${code} x${state[code].qty}`).join(' • ')
+                    : 'Nenhuma repetida marcada.';
+
+               document.getElementById('printArea').innerHTML = `
+                    <div class="print-page">
+                         <div class="print-head">
+                              <div>
+                                   <h1 class="print-title">Controle de Figurinhas - Copa 2026</h1>
+                                   <p class="print-subtitle">Versão compacta para impressão • Atualizado em ${today}</p>
+                              </div>
+                              <div class="print-author">
+                                   Feito por <strong>Gabriel Gondin</strong><br>
+                                   linkedin.com/in/gabriel-gondin
+                              </div>
+                         </div>
+
+                         <div class="print-summary">
+                              <div class="print-stat"><strong>${allCodes.length}</strong>Total</div>
+                              <div class="print-stat"><strong>${have}</strong>Já tenho</div>
+                              <div class="print-stat"><strong>${missing}</strong>Não tenho</div>
+                              <div class="print-stat"><strong>${dupes.length}</strong>Tipos repetidos</div>
+                              <div class="print-stat"><strong>${dupeTotal}</strong>Total repetidas</div>
+                         </div>
+
+                         <div class="print-legend">
+                              <span><i class="print-dot blank"></i>Sem marcar</span>
+                              <span><i class="print-dot have"></i>Já tenho</span>
+                              <span><i class="print-dot missing"></i>Não tenho</span>
+                              <span><i class="print-dot dupe"></i>R = repetidas</span>
+                         </div>
+
+                         <table class="print-table">
+                              <thead>
+                                   <tr>
+                                        <th class="print-country">Seleção</th>
+                                        ${numberHeader}
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   ${rows}
+                              </tbody>
+                         </table>
+
+                         <div class="print-dupes">
+                              <h3>Repetidas para troca</h3>
+                              <div class="print-dupes-list">${dupesText}</div>
+                         </div>
+
+                         <div class="print-footer">
+                              Use as cores para visualizar rapidamente: verde = já tenho, vermelho = não tenho. O número amarelo indica repetidas.
+                         </div>
+                    </div>
+               `;
+          }
+
+          window.addEventListener('beforeprint', renderPrintView);
 
           function closeModal() {
                document.getElementById('dataModal').classList.remove('open');
