@@ -193,6 +193,20 @@
                padding: 14px;
           }
 
+
+          .stat-line {
+               display: flex;
+               align-items: baseline;
+               gap: 8px;
+               flex-wrap: wrap;
+          }
+
+          .stat-percent {
+               color: var(--yellow);
+               font-weight: 900;
+               font-size: 14px;
+          }
+
           .stat strong {
                display: block;
                font-size: 26px;
@@ -326,6 +340,12 @@
                border-radius: 10px;
                padding: 7px 9px;
                letter-spacing: .8px;
+          }
+
+
+          .abbr.coca {
+               background: #dc2626;
+               color: #fff;
           }
 
           .section h2 {
@@ -831,6 +851,11 @@
                     color: #111 !important;
                }
 
+               .print-country.print-coca {
+                    background: #fee2e2 !important;
+                    color: #7f1d1d !important;
+               }
+
                .print-cell .rep {
                     display: inline-block;
                     margin-left: 1px;
@@ -881,7 +906,8 @@
                          <h1>Controle de Figurinhas da Copa 2026</h1>
                          <p class="subtitle">Use o botão de cada país para abrir/fechar a seção. Em cada figurinha,
                               marque se você já tem ou não.
-                              A quantidade de repetidas é ajustada apenas pelos botões − e +. O botão de imprimir usa
+                              A quantidade de repetidas é ajustada apenas pelos botões − e +. Também inclui a seção
+                              Coca-Cola até CC14. O botão de imprimir usa
                               uma versão compacta.</p>
                     </div>
 
@@ -900,7 +926,7 @@
                </div>
 
                <div class="toolbar">
-                    <input id="search" placeholder="Buscar por código ou seleção. Ex: BRA, RSA, Argentina" />
+                    <input id="search" placeholder="Buscar sem se preocupar com acento. Ex: BRA, curacao, cocacola" />
                     <select id="statusFilter">
                          <option value="all">Todas</option>
                          <option value="have">Já tenho</option>
@@ -918,9 +944,15 @@
      <main>
           <div class="wrap">
                <div class="stats">
-                    <div class="stat"><strong id="totalStickers">0</strong><span>Total</span></div>
-                    <div class="stat"><strong id="haveCount">0</strong><span>Tenho</span></div>
-                    <div class="stat"><strong id="missingCount">0</strong><span>Marcadas como não tenho</span></div>
+                    <div class="stat"><strong id="totalStickers">0</strong><span>Total no controle</span></div>
+                    <div class="stat">
+                         <div class="stat-line"><strong id="haveCount">0</strong><em id="havePercent"
+                                   class="stat-percent">0%</em></div><span>Tenho</span>
+                    </div>
+                    <div class="stat">
+                         <div class="stat-line"><strong id="missingCount">0</strong><em id="missingPercent"
+                                   class="stat-percent">0%</em></div><span>Marcadas como não tenho</span>
+                    </div>
                     <div class="stat"><strong id="dupeKinds">0</strong><span>Tipos repetidos</span></div>
                     <div class="stat"><strong id="dupeTotal">0</strong><span>Total de repetidas</span></div>
                </div>
@@ -964,6 +996,7 @@
      <script>
           const SECTIONS = [
                { code: 'FWC', name: 'Abertura + FIFA Museum', special: ['00', 'FWC1', 'FWC2', 'FWC3', 'FWC4', 'FWC5', 'FWC6', 'FWC7', 'FWC8', 'FWC9', 'FWC10', 'FWC11', 'FWC12', 'FWC13', 'FWC14', 'FWC15', 'FWC16', 'FWC17', 'FWC18', 'FWC19'] },
+               { code: 'CC', name: 'Coca-Cola x Panini', special: ['CC1', 'CC2', 'CC3', 'CC4', 'CC5', 'CC6', 'CC7', 'CC8', 'CC9', 'CC10', 'CC11', 'CC12', 'CC13', 'CC14'] },
                { code: 'MEX', name: 'Mexico' },
                { code: 'RSA', name: 'South Africa' },
                { code: 'KOR', name: 'South Korea' },
@@ -1030,6 +1063,7 @@
 
           function stickerType(code) {
                if (code === '00') return 'Panini';
+               if (code.startsWith('CC')) return 'Coca-Cola';
                if (code.startsWith('FWC')) return 'Especial';
                if (code.endsWith('1')) return 'Escudo';
                if (code.endsWith('13')) return 'Foto do time';
@@ -1056,7 +1090,7 @@
                     sec.innerHTML = `
             <div class="section-header" onclick="toggleSection('${section.code}')">
                 <div class="section-title">
-                    <span class="abbr">${section.code}</span>
+                    <span class="abbr ${section.code === 'CC' ? 'coca' : ''}">${section.code}</span>
                     <div>
                         <h2>${section.name}</h2>
                         <small>${codes.length} figurinhas nesta seção</small>
@@ -1131,10 +1165,14 @@
           function updateSectionCounts() {
                SECTIONS.forEach(section => {
                     const codes = getCodes(section);
+                    const total = codes.length;
                     const have = codes.filter(code => state[code]?.status === 'have').length;
+                    const missing = codes.filter(code => state[code]?.status === 'missing').length;
+                    const havePercent = total ? Math.round((have / total) * 100) : 0;
+                    const missingPercent = total ? Math.round((missing / total) * 100) : 0;
                     const dupes = codes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
                     const el = document.getElementById(`section-count-${section.code}`);
-                    if (el) el.textContent = `${have} tenho • ${dupes} rep.`;
+                    if (el) el.textContent = `${have} tenho (${havePercent}%) • ${missing} não tenho (${missingPercent}%) • ${dupes} rep.`;
                });
           }
 
@@ -1167,9 +1205,14 @@
                const dupes = allCodes.filter(code => Number(state[code]?.qty) > 0);
                const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
 
+               const havePercent = allCodes.length ? Math.round((have / allCodes.length) * 100) : 0;
+               const missingPercent = allCodes.length ? Math.round((missing / allCodes.length) * 100) : 0;
+
                document.getElementById('totalStickers').textContent = allCodes.length;
                document.getElementById('haveCount').textContent = have;
                document.getElementById('missingCount').textContent = missing;
+               document.getElementById('havePercent').textContent = `${havePercent}%`;
+               document.getElementById('missingPercent').textContent = `${missingPercent}%`;
                document.getElementById('dupeKinds').textContent = dupes.length;
                document.getElementById('dupeTotal').textContent = dupeTotal;
 
@@ -1181,16 +1224,28 @@
                }
           }
 
+
+          function normalizeSearchText(text) {
+               return String(text || '')
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/ç/g, 'c')
+                    .replace(/[^a-z0-9]/g, '');
+          }
+
           function applyFilters() {
-               const query = document.getElementById('search').value.trim().toLowerCase();
+               const query = normalizeSearchText(document.getElementById('search').value.trim());
                const status = document.getElementById('statusFilter').value;
 
                document.querySelectorAll('.section').forEach(section => {
                     let visibleCards = 0;
-                    const sectionMatches = section.dataset.code.includes(query) || section.dataset.name.includes(query);
+                    const sectionCode = normalizeSearchText(section.dataset.code);
+                    const sectionName = normalizeSearchText(section.dataset.name);
+                    const sectionMatches = sectionCode.includes(query) || sectionName.includes(query);
 
                     section.querySelectorAll('.sticker').forEach(card => {
-                         const code = card.dataset.code;
+                         const code = normalizeSearchText(card.dataset.code);
                          const originalCode = card.querySelector('.code').textContent;
                          const data = state[originalCode] || { status: '', qty: 0 };
                          const queryMatches = !query || sectionMatches || code.includes(query);
@@ -1248,6 +1303,8 @@
                const missing = allCodes.filter(code => state[code]?.status === 'missing').length;
                const dupes = allCodes.filter(code => Number(state[code]?.qty) > 0);
                const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
+               const havePercent = allCodes.length ? Math.round((have / allCodes.length) * 100) : 0;
+               const missingPercent = allCodes.length ? Math.round((missing / allCodes.length) * 100) : 0;
                const today = new Date().toLocaleDateString('pt-BR');
 
                const maxCols = 20;
@@ -1265,7 +1322,9 @@
                          const statusClass = data.status === 'have' ? 'have' : data.status === 'missing' ? 'missing' : 'blank';
                          const shortCode = section.code === 'FWC'
                               ? code.replace('FWC', 'F')
-                              : code.replace(section.code, '');
+                              : section.code === 'CC'
+                                   ? code
+                                   : code.replace(section.code, '');
 
                          const rep = Number(data.qty || 0) > 0 ? `<span class="rep">R${data.qty}</span>` : '';
 
@@ -1274,7 +1333,7 @@
 
                     return `
                          <tr>
-                              <td class="print-country">${section.code}<br><small>${section.name}</small></td>
+                              <td class="print-country ${section.code === 'CC' ? 'print-coca' : ''}">${section.code}<br><small>${section.name}</small></td>
                               ${cells}
                          </tr>
                     `;
@@ -1299,8 +1358,8 @@
 
                          <div class="print-summary">
                               <div class="print-stat"><strong>${allCodes.length}</strong>Total</div>
-                              <div class="print-stat"><strong>${have}</strong>Já tenho</div>
-                              <div class="print-stat"><strong>${missing}</strong>Não tenho</div>
+                              <div class="print-stat"><strong>${have}</strong>Já tenho • ${havePercent}%</div>
+                              <div class="print-stat"><strong>${missing}</strong>Não tenho • ${missingPercent}%</div>
                               <div class="print-stat"><strong>${dupes.length}</strong>Tipos repetidos</div>
                               <div class="print-stat"><strong>${dupeTotal}</strong>Total repetidas</div>
                          </div>
