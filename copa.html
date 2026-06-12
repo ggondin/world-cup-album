@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Controle de Figurinhas - Copa 2026</title>
+     <style>
+          :root {
+               --bg: #0b1220;
+               --card: #111827;
+               --card2: #172033;
+               --text: #eef2ff;
+               --muted: #94a3b8;
+               --line: rgba(255, 255, 255, .1);
+               --green: #16a34a;
+               --red: #dc2626;
+               --yellow: #facc15;
+               --blue: #2563eb;
+          }
+
+          * {
+               box-sizing: border-box;
+          }
+
+          body {
+               margin: 0;
+               font-family: Arial, Helvetica, sans-serif;
+               background: radial-gradient(circle at top, #172554 0, var(--bg) 42%);
+               color: var(--text);
+               min-height: 100vh;
+          }
+
+          header {
+               padding: 28px 18px 18px;
+               position: sticky;
+               top: 0;
+               z-index: 20;
+               background: rgba(11, 18, 32, .94);
+               backdrop-filter: blur(10px);
+               border-bottom: 1px solid var(--line);
+          }
+
+          .wrap {
+               max-width: 1320px;
+               margin: 0 auto;
+          }
+
+          h1 {
+               margin: 0 0 8px;
+               font-size: clamp(24px, 4vw, 42px);
+          }
+
+          .subtitle {
+               margin: 0;
+               color: var(--muted);
+               line-height: 1.45;
+          }
+
+          .toolbar {
+               display: grid;
+               grid-template-columns: 1fr repeat(5, auto);
+               gap: 10px;
+               margin-top: 18px;
+               align-items: center;
+          }
+
+          input,
+          select,
+          button,
+          textarea {
+               border: 1px solid var(--line);
+               border-radius: 12px;
+               background: #0f172a;
+               color: var(--text);
+               padding: 11px 12px;
+               font-size: 14px;
+          }
+
+          button {
+               cursor: pointer;
+               transition: .15s;
+          }
+
+          button:hover {
+               transform: translateY(-1px);
+               border-color: rgba(255, 255, 255, .28);
+          }
+
+          .btn-blue {
+               background: var(--blue);
+               border-color: transparent;
+          }
+
+          .btn-red {
+               background: #7f1d1d;
+               border-color: transparent;
+          }
+
+          .btn-green {
+               background: #14532d;
+               border-color: transparent;
+          }
+
+          .stats {
+               display: grid;
+               grid-template-columns: repeat(5, 1fr);
+               gap: 12px;
+               margin: 18px 0;
+          }
+
+          .stat {
+               background: rgba(17, 24, 39, .82);
+               border: 1px solid var(--line);
+               border-radius: 18px;
+               padding: 14px;
+          }
+
+          .stat strong {
+               display: block;
+               font-size: 26px;
+               margin-bottom: 4px;
+          }
+
+          .stat span {
+               color: var(--muted);
+               font-size: 13px;
+          }
+
+          main {
+               padding: 16px 18px 40px;
+          }
+
+          .legend {
+               display: flex;
+               gap: 10px;
+               flex-wrap: wrap;
+               margin: 12px 0 20px;
+               color: var(--muted);
+               font-size: 14px;
+          }
+
+          .dot {
+               width: 14px;
+               height: 14px;
+               border-radius: 50%;
+               display: inline-block;
+               margin-right: 5px;
+               vertical-align: -2px;
+          }
+
+          .dot.green {
+               background: var(--green);
+          }
+
+          .dot.red {
+               background: var(--red);
+          }
+
+          .dot.gray {
+               background: #334155;
+          }
+
+          .section {
+               background: rgba(15, 23, 42, .72);
+               border: 1px solid var(--line);
+               border-radius: 22px;
+               margin-bottom: 18px;
+               overflow: hidden;
+          }
+
+
+          .section-header {
+               cursor: pointer;
+          }
+
+          .section-actions {
+               display: flex;
+               align-items: center;
+               gap: 10px;
+               flex-wrap: wrap;
+          }
+
+          .toggle-section {
+               min-width: 116px;
+               border-radius: 999px;
+               padding: 9px 12px;
+               background: rgba(15, 23, 42, .86);
+               border: 1px solid rgba(255, 255, 255, .16);
+               font-weight: 700;
+          }
+
+          .toggle-section::before {
+               content: '▼';
+               display: inline-block;
+               margin-right: 7px;
+               font-size: 11px;
+               transition: transform .18s ease;
+          }
+
+          .section.collapsed .toggle-section::before {
+               transform: rotate(-90deg);
+          }
+
+          .section.collapsed .grid {
+               display: none;
+          }
+
+          .section.collapsed .section-header {
+               border-bottom: 0;
+          }
+
+          .section-counts {
+               color: var(--muted);
+               font-size: 12px;
+          }
+
+          .mobile-tools {
+               display: grid;
+               grid-template-columns: repeat(2, minmax(0, 1fr));
+               gap: 10px;
+               margin: 12px 0 18px;
+          }
+
+          .mobile-tools button {
+               width: 100%;
+          }
+
+          .section-header {
+               display: flex;
+               justify-content: space-between;
+               align-items: center;
+               gap: 12px;
+               padding: 16px;
+               background: linear-gradient(90deg, rgba(37, 99, 235, .25), rgba(15, 23, 42, .15));
+               border-bottom: 1px solid var(--line);
+          }
+
+          .section-title {
+               display: flex;
+               gap: 10px;
+               align-items: center;
+          }
+
+          .abbr {
+               background: #e2e8f0;
+               color: #0f172a;
+               font-weight: 800;
+               border-radius: 10px;
+               padding: 7px 9px;
+               letter-spacing: .8px;
+          }
+
+          .section h2 {
+               margin: 0;
+               font-size: 18px;
+          }
+
+          .section small {
+               color: var(--muted);
+          }
+
+          .grid {
+               display: grid;
+               grid-template-columns: repeat(10, minmax(92px, 1fr));
+               gap: 10px;
+               padding: 14px;
+          }
+
+          .sticker {
+               background: var(--card2);
+               border: 1px solid var(--line);
+               border-radius: 16px;
+               padding: 10px;
+               min-height: 92px;
+               display: flex;
+               flex-direction: column;
+               justify-content: space-between;
+               gap: 8px;
+               position: relative;
+          }
+
+          .sticker.have {
+               background: rgba(22, 163, 74, .86);
+               border-color: rgba(22, 163, 74, .95);
+          }
+
+          .sticker.missing {
+               background: rgba(220, 38, 38, .86);
+               border-color: rgba(220, 38, 38, .95);
+          }
+
+          .code {
+               font-weight: 900;
+               font-size: 17px;
+               letter-spacing: .4px;
+               cursor: pointer;
+               user-select: none;
+          }
+
+          .type {
+               font-size: 11px;
+               color: rgba(255, 255, 255, .78);
+               min-height: 16px;
+          }
+
+          .qty-row {
+               display: flex;
+               align-items: center;
+               gap: 5px;
+          }
+
+          .qty-row button {
+               width: 26px;
+               height: 26px;
+               padding: 0;
+               border-radius: 8px;
+               background: rgba(0, 0, 0, .22);
+          }
+
+          .qty {
+               width: 42px;
+               height: 28px;
+               padding: 3px;
+               text-align: center;
+               border-radius: 8px;
+               background: rgba(0, 0, 0, .22);
+          }
+
+          .dupes-panel {
+               background: rgba(17, 24, 39, .88);
+               border: 1px solid var(--line);
+               border-radius: 22px;
+               padding: 16px;
+               margin-bottom: 18px;
+          }
+
+          .dupes-panel h2 {
+               margin: 0 0 10px;
+          }
+
+          .dupe-tags {
+               display: flex;
+               flex-wrap: wrap;
+               gap: 8px;
+          }
+
+          .dupe-tag {
+               background: #1e293b;
+               border: 1px solid var(--line);
+               border-radius: 999px;
+               padding: 8px 10px;
+               font-weight: 700;
+          }
+
+          .empty {
+               color: var(--muted);
+          }
+
+          .modal {
+               display: none;
+               position: fixed;
+               inset: 0;
+               z-index: 50;
+               background: rgba(0, 0, 0, .7);
+               align-items: center;
+               justify-content: center;
+               padding: 18px;
+          }
+
+          .modal.open {
+               display: flex;
+          }
+
+          .modal-box {
+               max-width: 760px;
+               width: 100%;
+               background: #0f172a;
+               border: 1px solid var(--line);
+               border-radius: 22px;
+               padding: 18px;
+          }
+
+          .modal-box textarea {
+               width: 100%;
+               min-height: 230px;
+               margin: 12px 0;
+               font-family: monospace;
+          }
+
+          .modal-actions {
+               display: flex;
+               gap: 10px;
+               justify-content: flex-end;
+               flex-wrap: wrap;
+          }
+
+          @media (max-width: 1180px) {
+               .grid {
+                    grid-template-columns: repeat(5, minmax(0, 1fr));
+               }
+
+               .toolbar {
+                    grid-template-columns: 1fr 1fr;
+               }
+
+               .stats {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+               }
+          }
+
+          @media (max-width: 760px) {
+               header {
+                    position: static;
+                    padding: 22px 14px 14px;
+               }
+
+               main {
+                    padding: 14px 12px 30px;
+               }
+
+               .toolbar {
+                    grid-template-columns: 1fr;
+               }
+
+               .toolbar button,
+               .toolbar select,
+               .toolbar input {
+                    width: 100%;
+               }
+
+               .grid {
+                    grid-template-columns: repeat(3, minmax(0, 1fr));
+                    gap: 8px;
+                    padding: 10px;
+               }
+
+               .sticker {
+                    min-height: 86px;
+                    padding: 9px;
+                    border-radius: 14px;
+               }
+
+               .code {
+                    font-size: 15px;
+               }
+
+               .qty {
+                    width: 38px;
+               }
+
+               .section-header {
+                    padding: 13px;
+               }
+
+               .section-title {
+                    align-items: flex-start;
+               }
+
+               .section-actions {
+                    width: 100%;
+                    justify-content: space-between;
+               }
+
+               .toggle-section {
+                    flex: 1;
+               }
+          }
+
+          @media (max-width: 520px) {
+               h1 {
+                    font-size: 24px;
+               }
+
+               .subtitle {
+                    font-size: 13px;
+               }
+
+               .stats {
+                    grid-template-columns: 1fr;
+                    gap: 8px;
+               }
+
+               .stat {
+                    padding: 12px;
+                    border-radius: 14px;
+               }
+
+               .stat strong {
+                    font-size: 22px;
+               }
+
+               .mobile-tools {
+                    grid-template-columns: 1fr;
+               }
+
+               .grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+               }
+
+               .section-header {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 10px;
+               }
+
+               .section-title {
+                    width: 100%;
+               }
+
+               .abbr {
+                    min-width: 52px;
+                    text-align: center;
+               }
+
+               .section h2 {
+                    font-size: 16px;
+               }
+
+               .modal-box {
+                    padding: 14px;
+                    border-radius: 18px;
+               }
+          }
+
+          @media print {
+
+               header,
+               .dupes-panel,
+               .mobile-tools,
+               .toolbar,
+               .legend,
+               .toggle-section {
+                    display: none !important;
+               }
+
+               body {
+                    background: #fff;
+                    color: #000;
+               }
+
+               .section {
+                    break-inside: avoid;
+                    background: #fff;
+                    color: #000;
+                    border-color: #ddd;
+               }
+
+               .section.collapsed .grid {
+                    display: grid;
+               }
+
+               .sticker {
+                    color: #000;
+                    border-color: #ccc;
+               }
+          }
+     </style>
+</head>
+
+<body>
+     <header>
+          <div class="wrap">
+               <h1>Controle de Figurinhas da Copa 2026</h1>
+               <p class="subtitle">Use o botão de cada país para abrir/fechar a seção. Clique no código da figurinha
+                    para alternar: sem cor → verde tenho → vermelho falta.
+                    Coloque a quantidade de repetidas no campo de cada figurinha.</p>
+               <div class="toolbar">
+                    <input id="search" placeholder="Buscar por código ou seleção. Ex: BRA, RSA, Argentina" />
+                    <select id="statusFilter">
+                         <option value="all">Todas</option>
+                         <option value="have">Tenho</option>
+                         <option value="missing">Faltando</option>
+                         <option value="dupes">Com repetidas</option>
+                    </select>
+                    <button class="btn-blue" onclick="openExport()">Exportar</button>
+                    <button class="btn-green" onclick="openImport()">Importar</button>
+                    <button onclick="window.print()">Imprimir</button>
+                    <button class="btn-red" onclick="resetAll()">Zerar</button>
+               </div>
+          </div>
+     </header>
+
+     <main>
+          <div class="wrap">
+               <div class="stats">
+                    <div class="stat"><strong id="totalStickers">0</strong><span>Total no controle</span></div>
+                    <div class="stat"><strong id="haveCount">0</strong><span>Tenho</span></div>
+                    <div class="stat"><strong id="missingCount">0</strong><span>Marcadas como falta</span></div>
+                    <div class="stat"><strong id="dupeKinds">0</strong><span>Tipos repetidos</span></div>
+                    <div class="stat"><strong id="dupeTotal">0</strong><span>Total de repetidas</span></div>
+               </div>
+
+               <div class="legend">
+                    <span><span class="dot gray"></span> Sem marcar</span>
+                    <span><span class="dot green"></span> Tenho</span>
+                    <span><span class="dot red"></span> Faltando</span>
+               </div>
+
+               <div class="mobile-tools">
+                    <button class="btn-green" onclick="expandAllSections()">Abrir todos os países</button>
+                    <button class="btn-red" onclick="collapseAllSections()">Fechar todos os países</button>
+               </div>
+
+               <section class="dupes-panel">
+                    <h2>Repetidas para troca</h2>
+                    <div id="dupesList" class="dupe-tags"><span class="empty">Nenhuma repetida marcada ainda.</span>
+                    </div>
+               </section>
+
+               <div id="album"></div>
+          </div>
+     </main>
+
+     <div id="dataModal" class="modal">
+          <div class="modal-box">
+               <h2 id="modalTitle">Dados</h2>
+               <p id="modalHelp" class="subtitle"></p>
+               <textarea id="dataArea"></textarea>
+               <div class="modal-actions">
+                    <button onclick="closeModal()">Fechar</button>
+                    <button id="modalAction" class="btn-blue">Copiar</button>
+               </div>
+          </div>
+     </div>
+
+     <script>
+          const SECTIONS = [
+               { code: 'FWC', name: 'Abertura + FIFA Museum', special: ['00', 'FWC1', 'FWC2', 'FWC3', 'FWC4', 'FWC5', 'FWC6', 'FWC7', 'FWC8', 'FWC9', 'FWC10', 'FWC11', 'FWC12', 'FWC13', 'FWC14', 'FWC15', 'FWC16', 'FWC17', 'FWC18', 'FWC19'] },
+               { code: 'MEX', name: 'Mexico' },
+               { code: 'RSA', name: 'South Africa' },
+               { code: 'KOR', name: 'South Korea' },
+               { code: 'CZE', name: 'Czechia' },
+               { code: 'CAN', name: 'Canada' },
+               { code: 'BIH', name: 'Bosnia and Herzegovina' },
+               { code: 'QAT', name: 'Qatar' },
+               { code: 'SUI', name: 'Switzerland' },
+               { code: 'BRA', name: 'Brazil' },
+               { code: 'MAR', name: 'Morocco' },
+               { code: 'HAI', name: 'Haiti' },
+               { code: 'SCO', name: 'Scotland' },
+               { code: 'USA', name: 'USA' },
+               { code: 'PAR', name: 'Paraguay' },
+               { code: 'AUS', name: 'Australia' },
+               { code: 'TUR', name: 'Türkiye' },
+               { code: 'GER', name: 'Germany' },
+               { code: 'CUW', name: 'Curaçao' },
+               { code: 'CIV', name: 'Ivory Coast' },
+               { code: 'ECU', name: 'Ecuador' },
+               { code: 'NED', name: 'Netherlands' },
+               { code: 'JPN', name: 'Japan' },
+               { code: 'SWE', name: 'Sweden' },
+               { code: 'TUN', name: 'Tunisia' },
+               { code: 'BEL', name: 'Belgium' },
+               { code: 'EGY', name: 'Egypt' },
+               { code: 'IRN', name: 'Iran' },
+               { code: 'NZL', name: 'New Zealand' },
+               { code: 'ESP', name: 'Spain' },
+               { code: 'CPV', name: 'Cape Verde' },
+               { code: 'KSA', name: 'Saudi Arabia' },
+               { code: 'URU', name: 'Uruguay' },
+               { code: 'FRA', name: 'France' },
+               { code: 'SEN', name: 'Senegal' },
+               { code: 'IRQ', name: 'Iraq' },
+               { code: 'NOR', name: 'Norway' },
+               { code: 'ARG', name: 'Argentina' },
+               { code: 'ALG', name: 'Algeria' },
+               { code: 'AUT', name: 'Austria' },
+               { code: 'JOR', name: 'Jordan' },
+               { code: 'POR', name: 'Portugal' },
+               { code: 'COD', name: 'Congo DR' },
+               { code: 'UZB', name: 'Uzbekistan' },
+               { code: 'COL', name: 'Colombia' },
+               { code: 'ENG', name: 'England' },
+               { code: 'CRO', name: 'Croatia' },
+               { code: 'GHA', name: 'Ghana' },
+               { code: 'PAN', name: 'Panama' }
+          ];
+
+          const STORAGE_KEY = 'copa2026FigurinhasControleV1';
+          const COLLAPSE_KEY = 'copa2026FigurinhasSecoesFechadasV1';
+          let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+          let collapsedSections = JSON.parse(localStorage.getItem(COLLAPSE_KEY) || '{}');
+
+          function saveCollapsedSections() {
+               localStorage.setItem(COLLAPSE_KEY, JSON.stringify(collapsedSections));
+          }
+
+          function getCodes(section) {
+               if (section.special) return section.special;
+               return Array.from({ length: 20 }, (_, i) => `${section.code}${i + 1}`);
+          }
+
+          function stickerType(code) {
+               if (code === '00') return 'Panini';
+               if (code.startsWith('FWC')) return 'Especial';
+               if (code.endsWith('1')) return 'Escudo';
+               if (code.endsWith('13')) return 'Foto do time';
+               return 'Jogador';
+          }
+
+          function save() {
+               localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+               updateStats();
+               updateSectionCounts();
+          }
+
+          function render() {
+               const album = document.getElementById('album');
+               album.innerHTML = '';
+
+               SECTIONS.forEach(section => {
+                    const codes = getCodes(section);
+                    const sec = document.createElement('section');
+                    sec.className = `section ${collapsedSections[section.code] ? 'collapsed' : ''}`;
+                    sec.dataset.code = section.code.toLowerCase();
+                    sec.dataset.name = section.name.toLowerCase();
+
+                    sec.innerHTML = `
+            <div class="section-header" onclick="toggleSection('${section.code}')">
+                <div class="section-title">
+                    <span class="abbr">${section.code}</span>
+                    <div>
+                        <h2>${section.name}</h2>
+                        <small>${codes.length} figurinhas nesta seção</small>
+                    </div>
+                </div>
+                <div class="section-actions">
+                    <span class="section-counts" id="section-count-${section.code}">0 tenho • 0 rep.</span>
+                    <button type="button" class="toggle-section" onclick="event.stopPropagation(); toggleSection('${section.code}')">
+                         ${collapsedSections[section.code] ? 'Abrir' : 'Fechar'}
+                    </button>
+                </div>
+            </div>
+            <div class="grid"></div>
+        `;
+
+                    const grid = sec.querySelector('.grid');
+
+                    codes.forEach(code => {
+                         if (!state[code]) state[code] = { status: '', qty: 0 };
+
+                         const card = document.createElement('div');
+                         card.className = `sticker ${state[code].status}`;
+                         card.dataset.code = code.toLowerCase();
+                         card.innerHTML = `
+                <div class="code" onclick="toggleStatus('${code}')">${code}</div>
+                <div class="type">${stickerType(code)}</div>
+                <div class="qty-row">
+                    <button onclick="changeQty('${code}', -1)">−</button>
+                    <input class="qty" type="number" min="0" value="${state[code].qty || 0}" onchange="setQty('${code}', this.value)" />
+                    <button onclick="changeQty('${code}', 1)">+</button>
+                </div>
+            `;
+                         grid.appendChild(card);
+                    });
+
+                    album.appendChild(sec);
+               });
+
+               save();
+               applyFilters();
+          }
+
+          function toggleSection(sectionCode) {
+               collapsedSections[sectionCode] = !collapsedSections[sectionCode];
+               saveCollapsedSections();
+               render();
+          }
+
+          function collapseAllSections() {
+               SECTIONS.forEach(section => collapsedSections[section.code] = true);
+               saveCollapsedSections();
+               render();
+          }
+
+          function expandAllSections() {
+               collapsedSections = {};
+               saveCollapsedSections();
+               render();
+          }
+
+          function updateSectionCounts() {
+               SECTIONS.forEach(section => {
+                    const codes = getCodes(section);
+                    const have = codes.filter(code => state[code]?.status === 'have').length;
+                    const dupes = codes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
+                    const el = document.getElementById(`section-count-${section.code}`);
+                    if (el) el.textContent = `${have} tenho • ${dupes} rep.`;
+               });
+          }
+
+          function toggleStatus(code) {
+               const current = state[code]?.status || '';
+               const next = current === '' ? 'have' : current === 'have' ? 'missing' : '';
+               state[code].status = next;
+               render();
+          }
+
+          function setQty(code, value) {
+               state[code].qty = Math.max(0, Number(value) || 0);
+               save();
+               render();
+          }
+
+          function changeQty(code, delta) {
+               state[code].qty = Math.max(0, (Number(state[code].qty) || 0) + delta);
+               save();
+               render();
+          }
+
+          function updateStats() {
+               const allCodes = SECTIONS.flatMap(getCodes);
+               const have = allCodes.filter(code => state[code]?.status === 'have').length;
+               const missing = allCodes.filter(code => state[code]?.status === 'missing').length;
+               const dupes = allCodes.filter(code => Number(state[code]?.qty) > 0);
+               const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
+
+               document.getElementById('totalStickers').textContent = allCodes.length;
+               document.getElementById('haveCount').textContent = have;
+               document.getElementById('missingCount').textContent = missing;
+               document.getElementById('dupeKinds').textContent = dupes.length;
+               document.getElementById('dupeTotal').textContent = dupeTotal;
+
+               const dupesList = document.getElementById('dupesList');
+               if (!dupes.length) {
+                    dupesList.innerHTML = '<span class="empty">Nenhuma repetida marcada ainda.</span>';
+               } else {
+                    dupesList.innerHTML = dupes.map(code => `<span class="dupe-tag">${code} × ${state[code].qty}</span>`).join('');
+               }
+          }
+
+          function applyFilters() {
+               const query = document.getElementById('search').value.trim().toLowerCase();
+               const status = document.getElementById('statusFilter').value;
+
+               document.querySelectorAll('.section').forEach(section => {
+                    let visibleCards = 0;
+                    const sectionMatches = section.dataset.code.includes(query) || section.dataset.name.includes(query);
+
+                    section.querySelectorAll('.sticker').forEach(card => {
+                         const code = card.dataset.code;
+                         const originalCode = card.querySelector('.code').textContent;
+                         const data = state[originalCode] || { status: '', qty: 0 };
+                         const queryMatches = !query || sectionMatches || code.includes(query);
+                         const statusMatches = status === 'all' ||
+                              (status === 'have' && data.status === 'have') ||
+                              (status === 'missing' && data.status === 'missing') ||
+                              (status === 'dupes' && Number(data.qty) > 0);
+
+                         const show = queryMatches && statusMatches;
+                         card.style.display = show ? '' : 'none';
+                         if (show) visibleCards++;
+                    });
+
+                    section.style.display = visibleCards ? '' : 'none';
+               });
+          }
+
+          function openExport() {
+               const data = JSON.stringify(state, null, 2);
+               document.getElementById('modalTitle').textContent = 'Exportar controle';
+               document.getElementById('modalHelp').textContent = 'Copie esse JSON para guardar backup ou passar para outro navegador.';
+               document.getElementById('dataArea').value = data;
+               document.getElementById('modalAction').textContent = 'Copiar';
+               document.getElementById('modalAction').onclick = () => navigator.clipboard.writeText(document.getElementById('dataArea').value);
+               document.getElementById('dataModal').classList.add('open');
+          }
+
+          function openImport() {
+               document.getElementById('modalTitle').textContent = 'Importar controle';
+               document.getElementById('modalHelp').textContent = 'Cole aqui um JSON exportado anteriormente e clique em importar.';
+               document.getElementById('dataArea').value = '';
+               document.getElementById('modalAction').textContent = 'Importar';
+               document.getElementById('modalAction').onclick = () => {
+                    try {
+                         state = JSON.parse(document.getElementById('dataArea').value || '{}');
+                         save();
+                         closeModal();
+                         render();
+                    } catch (e) {
+                         alert('JSON inválido. Verifique o conteúdo colado.');
+                    }
+               };
+               document.getElementById('dataModal').classList.add('open');
+          }
+
+          function closeModal() {
+               document.getElementById('dataModal').classList.remove('open');
+          }
+
+          function resetAll() {
+               if (!confirm('Tem certeza que quer zerar tudo?')) return;
+               state = {};
+               localStorage.removeItem(STORAGE_KEY);
+               render();
+          }
+
+          document.getElementById('search').addEventListener('input', applyFilters);
+          document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+          render();
+     </script>
+</body>
+
+</html>
