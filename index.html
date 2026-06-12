@@ -57,6 +57,83 @@
                line-height: 1.45;
           }
 
+
+          .header-top {
+               display: flex;
+               align-items: flex-start;
+               justify-content: space-between;
+               gap: 18px;
+          }
+
+          .header-main {
+               min-width: 0;
+          }
+
+          .author-card {
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;
+               padding: 9px 12px;
+               border: 1px solid rgba(255, 255, 255, .14);
+               border-radius: 999px;
+               background: rgba(15, 23, 42, .82);
+               color: var(--text);
+               text-decoration: none;
+               box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+               white-space: nowrap;
+               transition: .18s;
+          }
+
+          .author-card:hover {
+               transform: translateY(-1px);
+               border-color: rgba(37, 99, 235, .65);
+               background: rgba(30, 41, 59, .92);
+          }
+
+          .author-img {
+               width: 42px;
+               height: 42px;
+               border-radius: 50%;
+               display: grid;
+               place-items: center;
+               flex: 0 0 auto;
+               background: linear-gradient(135deg, #2563eb, #16a34a);
+               color: #fff;
+               font-weight: 900;
+               font-size: 15px;
+               border: 2px solid rgba(255, 255, 255, .28);
+               overflow: hidden;
+          }
+
+          .author-img img {
+               width: 100%;
+               height: 100%;
+               object-fit: cover;
+               display: block;
+          }
+
+          .author-text {
+               display: flex;
+               flex-direction: column;
+               line-height: 1.15;
+          }
+
+          .author-text small {
+               color: var(--muted);
+               font-size: 11px;
+          }
+
+          .author-text strong {
+               color: #fff;
+               font-size: 14px;
+          }
+
+          .author-linkedin {
+               color: #93c5fd;
+               font-size: 11px;
+               margin-top: 2px;
+          }
+
           .toolbar {
                display: grid;
                grid-template-columns: 1fr repeat(5, auto);
@@ -272,7 +349,7 @@
                border: 1px solid var(--line);
                border-radius: 16px;
                padding: 10px;
-               min-height: 92px;
+               min-height: 138px;
                display: flex;
                flex-direction: column;
                justify-content: space-between;
@@ -294,7 +371,6 @@
                font-weight: 900;
                font-size: 17px;
                letter-spacing: .4px;
-               cursor: pointer;
                user-select: none;
           }
 
@@ -302,6 +378,58 @@
                font-size: 11px;
                color: rgba(255, 255, 255, .78);
                min-height: 16px;
+          }
+
+
+          .own-row {
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               gap: 6px;
+          }
+
+          .own-label {
+               grid-column: 1 / -1;
+               font-size: 11px;
+               color: rgba(255, 255, 255, .82);
+               font-weight: 700;
+          }
+
+          .own-btn {
+               height: 30px;
+               padding: 0 8px;
+               border-radius: 10px;
+               background: rgba(0, 0, 0, .22);
+               font-size: 12px;
+               font-weight: 800;
+          }
+
+          .own-btn.active-yes {
+               background: rgba(22, 163, 74, .95);
+               border-color: rgba(255, 255, 255, .38);
+          }
+
+          .own-btn.active-no {
+               background: rgba(220, 38, 38, .95);
+               border-color: rgba(255, 255, 255, .38);
+          }
+
+          .qty-display {
+               min-width: 42px;
+               height: 28px;
+               display: inline-flex;
+               align-items: center;
+               justify-content: center;
+               border-radius: 8px;
+               background: rgba(0, 0, 0, .22);
+               border: 1px solid var(--line);
+               font-weight: 800;
+               user-select: none;
+          }
+
+          .qty-label {
+               font-size: 11px;
+               color: rgba(255, 255, 255, .78);
+               margin-bottom: -4px;
           }
 
           .qty-row {
@@ -410,6 +538,17 @@
           }
 
           @media (max-width: 760px) {
+               .header-top {
+                    flex-direction: column;
+                    align-items: stretch;
+               }
+
+               .author-card {
+                    width: 100%;
+                    justify-content: flex-start;
+                    border-radius: 18px;
+               }
+
                header {
                     position: static;
                     padding: 22px 14px 14px;
@@ -436,7 +575,7 @@
                }
 
                .sticker {
-                    min-height: 86px;
+                    min-height: 132px;
                     padding: 9px;
                     border-radius: 14px;
                }
@@ -525,6 +664,10 @@
 
           @media print {
 
+               .author-card {
+                    display: none !important;
+               }
+
                header,
                .dupes-panel,
                .mobile-tools,
@@ -561,16 +704,33 @@
 <body>
      <header>
           <div class="wrap">
-               <h1>Controle de Figurinhas da Copa 2026</h1>
-               <p class="subtitle">Use o botão de cada país para abrir/fechar a seção. Clique no código da figurinha
-                    para alternar: sem cor → verde tenho → vermelho falta.
-                    Coloque a quantidade de repetidas no campo de cada figurinha.</p>
+               <div class="header-top">
+                    <div class="header-main">
+                         <h1>Controle de Figurinhas da Copa 2026</h1>
+                         <p class="subtitle">Use o botão de cada país para abrir/fechar a seção. Em cada figurinha, marque se você já tem ou não.
+                              A quantidade de repetidas é ajustada apenas pelos botões − e +.</p>
+                    </div>
+
+                    <a class="author-card" href="https://www.linkedin.com/in/gabriel-gondin/" target="_blank" rel="noopener noreferrer"
+                         title="Criado por Gabriel Gondin">
+                         <!-- Para usar uma foto real, troque o conteúdo abaixo por:
+                              <span class="author-img"><img src="sua-foto.jpg" alt="Gabriel Gondin"></span>
+                         -->
+                         <span class="author-img" aria-hidden="true">GG</span>
+                         <span class="author-text">
+                              <small>Feito por</small>
+                              <strong>Gabriel Gondin</strong>
+                              <span class="author-linkedin">LinkedIn</span>
+                         </span>
+                    </a>
+               </div>
+
                <div class="toolbar">
                     <input id="search" placeholder="Buscar por código ou seleção. Ex: BRA, RSA, Argentina" />
                     <select id="statusFilter">
                          <option value="all">Todas</option>
-                         <option value="have">Tenho</option>
-                         <option value="missing">Faltando</option>
+                         <option value="have">Já tenho</option>
+                         <option value="missing">Não tenho</option>
                          <option value="dupes">Com repetidas</option>
                     </select>
                     <button class="btn-blue" onclick="openExport()">Exportar</button>
@@ -586,15 +746,15 @@
                <div class="stats">
                     <div class="stat"><strong id="totalStickers">0</strong><span>Total no controle</span></div>
                     <div class="stat"><strong id="haveCount">0</strong><span>Tenho</span></div>
-                    <div class="stat"><strong id="missingCount">0</strong><span>Marcadas como falta</span></div>
+                    <div class="stat"><strong id="missingCount">0</strong><span>Marcadas como não tenho</span></div>
                     <div class="stat"><strong id="dupeKinds">0</strong><span>Tipos repetidos</span></div>
                     <div class="stat"><strong id="dupeTotal">0</strong><span>Total de repetidas</span></div>
                </div>
 
                <div class="legend">
                     <span><span class="dot gray"></span> Sem marcar</span>
-                    <span><span class="dot green"></span> Tenho</span>
-                    <span><span class="dot red"></span> Faltando</span>
+                    <span><span class="dot green"></span> Já tenho</span>
+                    <span><span class="dot red"></span> Não tenho</span>
                </div>
 
                <div class="mobile-tools">
@@ -743,13 +903,24 @@
                          const card = document.createElement('div');
                          card.className = `sticker ${state[code].status}`;
                          card.dataset.code = code.toLowerCase();
+                         const isHave = state[code].status === 'have';
+                         const isMissing = state[code].status === 'missing';
+
                          card.innerHTML = `
-                <div class="code" onclick="toggleStatus('${code}')">${code}</div>
+                <div class="code">${code}</div>
                 <div class="type">${stickerType(code)}</div>
+
+                <div class="own-row">
+                    <span class="own-label">Já tem?</span>
+                    <button type="button" class="own-btn ${isHave ? 'active-yes' : ''}" onclick="setStatus('${code}', 'have')">Sim</button>
+                    <button type="button" class="own-btn ${isMissing ? 'active-no' : ''}" onclick="setStatus('${code}', 'missing')">Não</button>
+                </div>
+
+                <div class="qty-label">Repetidas</div>
                 <div class="qty-row">
-                    <button onclick="changeQty('${code}', -1)">−</button>
-                    <input class="qty" type="number" min="0" value="${state[code].qty || 0}" onchange="setQty('${code}', this.value)" />
-                    <button onclick="changeQty('${code}', 1)">+</button>
+                    <button type="button" onclick="changeQty('${code}', -1)">−</button>
+                    <span class="qty-display">${state[code].qty || 0}</span>
+                    <button type="button" onclick="changeQty('${code}', 1)">+</button>
                 </div>
             `;
                          grid.appendChild(card);
@@ -790,16 +961,19 @@
                });
           }
 
+          function setStatus(code, status) {
+               if (!state[code]) state[code] = { status: '', qty: 0 };
+
+               // Se clicar de novo na mesma opção, limpa a marcação.
+               state[code].status = state[code].status === status ? '' : status;
+
+               render();
+          }
+
           function toggleStatus(code) {
                const current = state[code]?.status || '';
                const next = current === '' ? 'have' : current === 'have' ? 'missing' : '';
                state[code].status = next;
-               render();
-          }
-
-          function setQty(code, value) {
-               state[code].qty = Math.max(0, Number(value) || 0);
-               save();
                render();
           }
 
@@ -893,6 +1067,8 @@
                if (!confirm('Tem certeza que quer zerar tudo?')) return;
                state = {};
                localStorage.removeItem(STORAGE_KEY);
+               localStorage.removeItem(COLLAPSE_KEY);
+               collapsedSections = {};
                render();
           }
 
