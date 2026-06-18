@@ -1571,7 +1571,7 @@
                          <button type="button" class="btn-soft" onclick="openTutorial()">Como usar</button>
                          <button type="button" class="btn-blue" onclick="openTradeComparator()">Comparar trocas</button>
                          <button type="button" class="btn-green" onclick="openTextExport()">Copiar lista</button>
-                         <button type="button" onclick="openExport()">Exportar</button>
+                         <button type="button" onclick="openExport()">Backup</button>
                          <button type="button" onclick="openImport()">Importar</button>
                          <button type="button" class="btn-theme" id="themeToggle" onclick="toggleTheme()"><span
                                    class="material-symbols-rounded theme-icon" id="themeIcon">light_mode</span><span
@@ -2213,12 +2213,13 @@ CC: 12"></textarea>
                return [
                     'Não tenho:',
                     '',
-                    missingLines.length ? missingLines.join('') : 'Nenhuma figurinha marcada como não tenho.',
+                    missingLines.length ? missingLines.join('\n') : 'Nenhuma figurinha marcada como não tenho.',
                     '',
                     '',
                     'Repetidas:',
                     '',
-                    dupeLines.length ? dupeLines.join('') : 'Nenhuma figurinha repetida marcada.'].join('');
+                    dupeLines.length ? dupeLines.join('\n') : 'Nenhuma figurinha repetida marcada.'
+               ].join('\n');
           }
 
           function openTextExport() {
@@ -2261,7 +2262,10 @@ CC: 12"></textarea>
           }
 
           function normalizeStickerCode(sectionCode, value) {
-               const number = Number(String(value).replace(/\D/g, ''));
+               const numberText = String(value).replace(/\D/g, '');
+               const number = Number(numberText);
+
+               if (!numberText && sectionCode !== 'FWC') return '';
 
                if (sectionCode === 'FWC') {
                     return number === 0 ? '00' : `FWC${number}`;
@@ -2276,10 +2280,12 @@ CC: 12"></textarea>
 
           function parseSectionNumbers(text, sectionCode, validCodes) {
                const codes = [];
-               const parts = String(text || '').split(/[,;•]+/);
+               const sectionCodes = SECTIONS.map(section => section.code).join('|');
+               const parts = String(text || '').split(/[,;•\n]+/);
 
                parts.forEach(part => {
-                    const fullCodeMatch = part.toUpperCase().match(/(FWC|CC|MEX|RSA|KOR|CZE|CAN|BIH|QAT|SUI|BRA|MAR|HAI|SCO|USA|PAR|AUS|TUR|GER|CUW|CIV|ECU|NED|JPN|SWE|TUN|BEL|EGY|IRN|NZL|ESP|CPV|KSA|URU|FRA|SEN|IRQ|NOR|ARG|ALG|AUT|JOR|POR|COD|UZB|COL|ENG|CRO|GHA|PAN)\s*0*(\d{1,2})/);
+                    const fullCodeRegex = new RegExp(`\\b(${sectionCodes})\\s*0*(\\d{1,2})\\b`, 'i');
+                    const fullCodeMatch = part.toUpperCase().match(fullCodeRegex);
 
                     if (fullCodeMatch) {
                          const code = normalizeStickerCode(fullCodeMatch[1], fullCodeMatch[2]);
@@ -2287,7 +2293,7 @@ CC: 12"></textarea>
                          return;
                     }
 
-                    const numberMatch = part.match(/(00|\d{1,2})/);
+                    const numberMatch = part.match(/\b(00|\d{1,2})\b/);
                     if (!numberMatch) return;
 
                     const code = normalizeStickerCode(sectionCode, numberMatch[1]);
@@ -2301,10 +2307,11 @@ CC: 12"></textarea>
                const validCodes = getValidCodeSet();
                const foundCodes = new Set();
                const sectionCodes = SECTIONS.map(section => section.code).join('|');
-               const lines = String(rawText || '').split(/+/);
+               const lines = String(rawText || '').split(/\n+/);
 
                lines.forEach(line => {
-                    const sectionMatch = line.toUpperCase().match(new RegExp(`\b(${sectionCodes})\b\s*:`));
+                    const upperLine = line.toUpperCase();
+                    const sectionMatch = upperLine.match(new RegExp(`\\b(${sectionCodes})\\b\\s*:`));
 
                     if (sectionMatch) {
                          const sectionCode = sectionMatch[1];
@@ -2313,7 +2320,7 @@ CC: 12"></textarea>
                          return;
                     }
 
-                    const fullCodeRegex = new RegExp(`\b(${sectionCodes})\s*0*(\d{1,2})\b`, 'gi');
+                    const fullCodeRegex = new RegExp(`\\b(${sectionCodes})\\s*0*(\\d{1,2})\\b`, 'gi');
                     let match;
 
                     while ((match = fullCodeRegex.exec(line)) !== null) {
@@ -2338,8 +2345,8 @@ CC: 12"></textarea>
                const usefulCodes = friendCodes.filter(code => missingSet.has(code));
                const total = usefulCodes.length;
                const output = total
-                    ? `Seu amigo tem ${total} ${total === 1 ? 'figurinha repetida que está faltando' : 'figurinhas repetidas que estão faltando'} no seu álbum. ✅ Lista rápida: ${formatQuickList(usefulCodes)}.`
-                    : 'Seu amigo não tem repetidas que estejam marcadas como faltando no seu álbum. Confira se suas figurinhas faltantes estão marcadas como “Não tenho” e se o texto colado está no formato correto.';
+                    ? `Seu amigo tem ${total} ${total === 1 ? 'figurinha repetida que está faltando' : 'figurinhas repetidas que estão faltando'} no seu álbum. ✅\n\nLista rápida:\n${formatQuickList(usefulCodes)}.`
+                    : 'Seu amigo não tem repetidas que estejam marcadas como faltando no seu álbum.\n\nConfira se suas figurinhas faltantes estão marcadas como “Não tenho” e se o texto colado está no formato correto.';
 
                document.getElementById('compareOutput').value = output;
           }
