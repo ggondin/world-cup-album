@@ -886,6 +886,14 @@
                     grid-template-columns: 1fr 1fr;
                }
 
+               .toolbar-improved {
+                    grid-template-columns: 1fr;
+               }
+
+               .toolbar-actions {
+                    justify-content: flex-start;
+               }
+
                .stats {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                }
@@ -916,10 +924,23 @@
                     grid-template-columns: 1fr;
                }
 
+               .toolbar-search {
+                    grid-template-columns: 1fr;
+               }
+
+               .toolbar-actions {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+               }
+
                .toolbar button,
                .toolbar select,
                .toolbar input {
                     width: 100%;
+               }
+
+               .modal-grid {
+                    grid-template-columns: 1fr;
                }
 
                .grid {
@@ -987,6 +1008,10 @@
                     grid-template-columns: 1fr;
                }
 
+               .toolbar-actions {
+                    grid-template-columns: 1fr;
+               }
+
                .grid {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                }
@@ -1016,6 +1041,184 @@
                }
           }
 
+
+
+          .toolbar-improved {
+               display: grid;
+               grid-template-columns: minmax(280px, 1fr) auto;
+               gap: 12px;
+               align-items: stretch;
+          }
+
+          .toolbar-search {
+               display: grid;
+               grid-template-columns: minmax(220px, 1fr) 180px;
+               gap: 10px;
+          }
+
+          .toolbar-actions {
+               display: flex;
+               align-items: center;
+               justify-content: flex-end;
+               gap: 8px;
+               flex-wrap: wrap;
+          }
+
+          .btn-soft {
+               background: rgba(255, 255, 255, .08);
+               border-color: rgba(255, 255, 255, .18);
+          }
+
+          .modal-box.large {
+               max-width: 980px;
+          }
+
+          .modal-grid {
+               display: grid;
+               grid-template-columns: 1fr 1fr;
+               gap: 14px;
+               margin: 12px 0;
+          }
+
+          .modal-field {
+               display: flex;
+               flex-direction: column;
+               gap: 8px;
+          }
+
+          .modal-field label {
+               font-size: 13px;
+               color: var(--muted);
+               font-weight: 800;
+          }
+
+          .modal-box .textarea-small {
+               min-height: 190px;
+          }
+
+          .modal-box .textarea-large {
+               min-height: 360px;
+          }
+
+          .tutorial-list {
+               margin: 12px 0 0;
+               padding-left: 20px;
+               color: var(--muted);
+               line-height: 1.55;
+          }
+
+          .tutorial-list strong {
+               color: var(--text);
+          }
+
+          body.light-theme .btn-soft {
+               background: #f1f5f9;
+               border-color: rgba(15, 23, 42, .14);
+          }
+
+
+
+          @media (max-width: 760px) {
+
+               html,
+               body {
+                    width: 100%;
+                    max-width: 100%;
+                    overflow-x: hidden;
+               }
+
+               header {
+                    position: static;
+                    padding: 20px 14px 14px;
+               }
+
+               .wrap {
+                    width: 100%;
+                    max-width: 100%;
+               }
+
+               .header-top {
+                    gap: 14px;
+               }
+
+               .subtitle {
+                    font-size: 13px;
+                    line-height: 1.45;
+               }
+
+               .author-card {
+                    width: 100%;
+                    min-width: 0;
+               }
+
+               .toolbar.toolbar-improved {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 12px;
+                    width: 100%;
+                    max-width: 100%;
+                    align-items: start;
+                    margin-top: 16px;
+               }
+
+               .toolbar-search {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 10px;
+                    width: 100%;
+                    min-width: 0;
+               }
+
+               .toolbar-search input,
+               .toolbar-search select {
+                    width: 100%;
+                    min-width: 0;
+                    height: 46px;
+                    min-height: 46px;
+               }
+
+               .toolbar-actions {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 8px;
+                    width: 100%;
+                    min-width: 0;
+               }
+
+               .toolbar-actions button {
+                    width: 100%;
+                    min-width: 0;
+                    min-height: 44px;
+                    padding: 10px 8px;
+                    white-space: normal;
+                    line-height: 1.15;
+               }
+
+               .btn-theme {
+                    gap: 6px;
+               }
+          }
+
+          @media (max-width: 420px) {
+               .toolbar-actions {
+                    grid-template-columns: 1fr 1fr;
+               }
+
+               .toolbar-actions button {
+                    font-size: 13px;
+               }
+
+               .theme-icon {
+                    font-size: 17px;
+               }
+          }
+
+          @media (max-width: 340px) {
+               .toolbar-actions {
+                    grid-template-columns: 1fr;
+               }
+          }
+
           .print-only {
                display: none;
           }
@@ -1023,7 +1226,7 @@
           @media print {
                @page {
                     size: A4 portrait;
-                    margin: 9mm;
+                    margin: 10mm;
                }
 
                * {
@@ -1051,7 +1254,7 @@
 
                .print-page {
                     width: 100%;
-                    min-height: calc(297mm - 18mm);
+                    min-height: calc(297mm - 20mm);
                     color: #000;
                     page-break-after: always;
                     break-after: page;
@@ -1067,21 +1270,21 @@
                     align-items: flex-start;
                     justify-content: space-between;
                     gap: 12px;
-                    padding-bottom: 7px;
+                    padding-bottom: 8px;
                     border-bottom: 2px solid #111;
-                    margin-bottom: 7px;
+                    margin-bottom: 8px;
                }
 
                .print-title {
-                    font-size: 17px;
+                    font-size: 18px;
                     font-weight: 900;
                     margin: 0 0 3px;
                }
 
                .print-subtitle {
-                    font-size: 8px;
+                    font-size: 9px;
                     margin: 0;
-                    color: #334155;
+                    color: #333;
                }
 
                .print-author {
@@ -1095,7 +1298,7 @@
                     display: grid;
                     grid-template-columns: repeat(5, 1fr);
                     gap: 5px;
-                    margin: 7px 0 8px;
+                    margin: 8px 0 10px;
                }
 
                .print-stat {
@@ -1114,61 +1317,26 @@
                }
 
                .print-block {
-                    margin-top: 8px;
+                    margin-top: 10px;
                }
 
                .print-block h2 {
                     margin: 0 0 4px;
-                    font-size: 14px;
+                    font-size: 15px;
                     font-weight: 900;
                }
 
                .print-description,
                .print-empty {
-                    margin: 0 0 7px;
+                    margin: 0 0 8px;
                     font-size: 8px;
                     color: #475569;
-               }
-
-               .print-legend {
-                    display: flex;
-                    gap: 8px;
-                    align-items: center;
-                    flex-wrap: wrap;
-                    font-size: 8px;
-                    margin: 5px 0 7px;
-               }
-
-               .print-dot {
-                    width: 8px;
-                    height: 8px;
-                    display: inline-block;
-                    border-radius: 2px;
-                    border: 1px solid #64748b;
-                    margin-right: 3px;
-                    vertical-align: -1px;
-               }
-
-               .print-dot-have {
-                    background: #16a34a;
-               }
-
-               .print-dot-missing {
-                    background: #dc2626;
-               }
-
-               .print-dot-blank {
-                    background: #fff;
-               }
-
-               .print-dot-dupe {
-                    background: #facc15;
                }
 
                .print-groups {
                     display: grid;
                     grid-template-columns: repeat(2, minmax(0, 1fr));
-                    gap: 5px;
+                    gap: 6px;
                }
 
                .print-group {
@@ -1211,14 +1379,19 @@
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
-                    gap: 2px;
                     min-height: 15px;
                     padding: 2px 5px;
                     border-radius: 999px;
-                    font-size: 7.2px;
-                    font-weight: 900;
+                    font-size: 7.4px;
+                    font-weight: 800;
                     border: 1px solid #cbd5e1;
                     line-height: 1.15;
+               }
+
+               .print-chip-dupe {
+                    background: #fef3c7;
+                    color: #78350f;
+                    border-color: #f59e0b;
                }
 
                .print-chip-have {
@@ -1233,20 +1406,73 @@
                     border-color: #ef4444;
                }
 
-               .print-chip-blank {
-                    background: #fff;
+               .print-album-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    table-layout: fixed;
+                    font-size: 7.2px;
+                    margin-top: 7px;
+               }
+
+               .print-album-table th,
+               .print-album-table td {
+                    border: 1px solid #cbd5e1;
+                    text-align: center;
+                    vertical-align: middle;
+                    height: 18px;
+                    padding: 1px;
+                    overflow: hidden;
+               }
+
+               .print-album-table th {
+                    background: #f1f5f9;
                     color: #0f172a;
-                    border-color: #cbd5e1;
+                    font-weight: 900;
                }
 
-               .print-chip-dupe {
-                    background: #fef3c7;
-                    color: #78350f;
-                    border-color: #f59e0b;
+               .print-album-country {
+                    width: 78px;
+                    text-align: left !important;
+                    background: #f8fafc;
+                    color: #0f172a;
+                    font-weight: 900;
+                    line-height: 1.15;
+                    padding-left: 4px !important;
                }
 
-               .print-chip-rep {
+               .print-album-country small {
+                    display: block;
+                    color: #475569;
+                    font-size: 5.8px;
+                    font-weight: 700;
+                    margin-top: 1px;
+               }
+
+               .print-album-cell {
+                    position: relative;
+                    font-weight: 900;
+                    color: #0f172a;
+                    background: #fff;
+               }
+
+               .print-album-cell.have {
+                    background: #16a34a !important;
+                    color: #fff !important;
+               }
+
+               .print-album-cell.missing {
+                    background: #dc2626 !important;
+                    color: #fff !important;
+               }
+
+               .print-album-cell.blank {
+                    background: #fff !important;
+                    color: #0f172a !important;
+               }
+
+               .print-rep-badge {
                     display: inline-block;
+                    margin-left: 1px;
                     padding: 0 2px;
                     border-radius: 2px;
                     background: #facc15 !important;
@@ -1256,8 +1482,43 @@
                     line-height: 1.15;
                }
 
+               .print-legend {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    font-size: 8px;
+                    margin: 7px 0 5px;
+               }
+
+               .print-dot {
+                    width: 8px;
+                    height: 8px;
+                    display: inline-block;
+                    border-radius: 2px;
+                    border: 1px solid #64748b;
+                    margin-right: 3px;
+                    vertical-align: -1px;
+               }
+
+               .print-dot-have {
+                    background: #16a34a;
+               }
+
+               .print-dot-missing {
+                    background: #dc2626;
+               }
+
+               .print-dot-blank {
+                    background: #fff;
+               }
+
+               .print-dot-dupe {
+                    background: #facc15;
+               }
+
                .print-footer {
-                    margin-top: 8px;
+                    margin-top: 10px;
                     padding-top: 5px;
                     border-top: 1px solid #e2e8f0;
                     font-size: 7px;
@@ -1295,21 +1556,29 @@
                     </a>
                </div>
 
-               <div class="toolbar">
-                    <input id="search" placeholder="Buscar sem se preocupar com acento. Ex: BRA, curacao, cocacola" />
-                    <select id="statusFilter">
-                         <option value="all">Todas</option>
-                         <option value="have">Já tenho</option>
-                         <option value="missing">Não tenho</option>
-                         <option value="dupes">Com repetidas</option>
-                    </select>
-                    <button class="btn-blue" onclick="openExport()">Exportar</button>
-                    <button class="btn-green" onclick="openImport()">Importar</button>
-                    <button class="btn-theme" id="themeToggle" onclick="toggleTheme()"><span
-                              class="material-symbols-rounded theme-icon" id="themeIcon">light_mode</span><span
-                              id="themeText">Tema claro</span></button>
-                    <button onclick="printCompact()">Imprimir compacto</button>
-                    <button class="btn-red" onclick="resetAll()">Zerar</button>
+               <div class="toolbar toolbar-improved">
+                    <div class="toolbar-search">
+                         <input id="search" placeholder="Buscar por país ou figurinha. Ex: BRA, curacao, cocacola" />
+                         <select id="statusFilter">
+                              <option value="all">Todas</option>
+                              <option value="have">Já tenho</option>
+                              <option value="missing">Não tenho</option>
+                              <option value="dupes">Com repetidas</option>
+                         </select>
+                    </div>
+
+                    <div class="toolbar-actions">
+                         <button type="button" class="btn-soft" onclick="openTutorial()">Como usar</button>
+                         <button type="button" class="btn-blue" onclick="openTradeComparator()">Comparar trocas</button>
+                         <button type="button" class="btn-green" onclick="openTextExport()">Copiar lista</button>
+                         <button type="button" onclick="openExport()">Exportar</button>
+                         <button type="button" onclick="openImport()">Importar</button>
+                         <button type="button" class="btn-theme" id="themeToggle" onclick="toggleTheme()"><span
+                                   class="material-symbols-rounded theme-icon" id="themeIcon">light_mode</span><span
+                                   id="themeText">Tema claro</span></button>
+                         <button type="button" onclick="printCompact()">Imprimir</button>
+                         <button type="button" class="btn-red" onclick="resetAll()">Zerar</button>
+                    </div>
                </div>
           </div>
      </header>
@@ -1364,6 +1633,66 @@
           </div>
      </div>
 
+
+     <div id="textExportModal" class="modal">
+          <div class="modal-box large">
+               <h2>Lista em texto para copiar</h2>
+               <p class="subtitle">Formato simples para mandar no WhatsApp, salvar em notas ou compartilhar com outra
+                    pessoa.</p>
+               <textarea id="textExportArea" class="textarea-large" readonly></textarea>
+               <div class="modal-actions">
+                    <button onclick="closeTextExport()">Fechar</button>
+                    <button class="btn-blue" onclick="copyTextExport()">Copiar texto</button>
+               </div>
+          </div>
+     </div>
+
+     <div id="compareModal" class="modal">
+          <div class="modal-box large">
+               <h2>Comparar trocas</h2>
+               <p class="subtitle">Cole as repetidas da outra pessoa no primeiro campo. O sistema compara com as suas
+                    figurinhas marcadas como “Não tenho”.</p>
+               <div class="modal-grid">
+                    <div class="modal-field">
+                         <label for="friendDupesInput">Repetidas da outra pessoa</label>
+                         <textarea id="friendDupesInput" class="textarea-small" placeholder="Exemplo:
+MEX: 04, 06, 08
+BRA: 15, 19
+CC: 12"></textarea>
+                    </div>
+                    <div class="modal-field">
+                         <label for="compareOutput">Resultado para copiar</label>
+                         <textarea id="compareOutput" class="textarea-small" readonly></textarea>
+                    </div>
+               </div>
+               <div class="modal-actions">
+                    <button onclick="clearTradeComparator()">Limpar</button>
+                    <button onclick="closeTradeComparator()">Fechar</button>
+                    <button class="btn-green" onclick="copyCompareOutput()">Copiar resultado</button>
+                    <button class="btn-blue" onclick="compareTradeList()">Comparar agora</button>
+               </div>
+          </div>
+     </div>
+
+     <div id="tutorialModal" class="modal">
+          <div class="modal-box">
+               <h2>Como usar</h2>
+               <p class="subtitle">Um guia rápido para usar o controle sem complicação.</p>
+               <ol class="tutorial-list">
+                    <li><strong>Marque cada figurinha:</strong> use “Sim” para as que você tem e “Não” para as que
+                         faltam.</li>
+                    <li><strong>Controle repetidas:</strong> use os botões − e + em cada card.</li>
+                    <li><strong>Copie sua lista:</strong> o botão “Copiar lista” gera um texto com “Não tenho” e
+                         “Repetidas”.</li>
+                    <li><strong>Compare trocas:</strong> cole as repetidas de outra pessoa e veja só o que falta para
+                         você.</li>
+                    <li><strong>Backup JSON:</strong> use para salvar o controle completo e restaurar depois.</li>
+               </ol>
+               <div class="modal-actions">
+                    <button class="btn-blue" onclick="closeTutorial()">Entendi</button>
+               </div>
+          </div>
+     </div>
 
      <div id="toast" class="toast"></div>
 
@@ -1426,36 +1755,12 @@
           const STORAGE_KEY = 'copa2026FigurinhasControleV1';
           const COLLAPSE_KEY = 'copa2026FigurinhasSecoesFechadasV1';
           const THEME_KEY = 'copa2026FigurinhasTemaV1';
+          const SECTION_EMOJIS = {
+               FWC: '🏆', CC: '🥤', MEX: '🇲🇽', RSA: '🇿🇦', KOR: '🇰🇷', CZE: '🇨🇿', CAN: '🇨🇦', BIH: '🇧🇦', QAT: '🇶🇦', SUI: '🇨🇭', BRA: '🇧🇷', MAR: '🇲🇦', HAI: '🇭🇹', SCO: '🏴', USA: '🇺🇸', PAR: '🇵🇾', AUS: '🇦🇺', TUR: '🇹🇷', GER: '🇩🇪', CUW: '🇨🇼', CIV: '🇨🇮', ECU: '🇪🇨', NED: '🇳🇱', JPN: '🇯🇵', SWE: '🇸🇪', TUN: '🇹🇳', BEL: '🇧🇪', EGY: '🇪🇬', IRN: '🇮🇷', NZL: '🇳🇿', ESP: '🇪🇸', CPV: '🇨🇻', KSA: '🇸🇦', URU: '🇺🇾', FRA: '🇫🇷', SEN: '🇸🇳', IRQ: '🇮🇶', NOR: '🇳🇴', ARG: '🇦🇷', ALG: '🇩🇿', AUT: '🇦🇹', JOR: '🇯🇴', POR: '🇵🇹', COD: '🇨🇩', UZB: '🇺🇿', COL: '🇨🇴', ENG: '🇬🇧', CRO: '🇭🇷', GHA: '🇬🇭', PAN: '🇵🇦'
+          };
+          let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+          let collapsedSections = JSON.parse(localStorage.getItem(COLLAPSE_KEY) || '{}');
 
-          const ALL_CODES = SECTIONS.flatMap(getCodes);
-
-          let state = getStoredJson(STORAGE_KEY, {});
-          let collapsedSections = getStoredJson(COLLAPSE_KEY, {});
-          let toastTimer = null;
-          let filterFrame = null;
-
-          function getStoredJson(key, fallback) {
-               try {
-                    const value = JSON.parse(localStorage.getItem(key) || 'null');
-                    return value && typeof value === 'object' && !Array.isArray(value) ? value : fallback;
-               } catch (e) {
-                    return fallback;
-               }
-          }
-
-          function ensureState() {
-               ALL_CODES.forEach(code => {
-                    if (!state[code] || typeof state[code] !== 'object') {
-                         state[code] = { status: '', qty: 0 };
-                    }
-
-                    if (!['', 'have', 'missing'].includes(state[code].status)) {
-                         state[code].status = '';
-                    }
-
-                    state[code].qty = Math.max(0, Number(state[code].qty) || 0);
-               });
-          }
 
           function applyTheme(theme) {
                const isLight = theme === 'light';
@@ -1482,7 +1787,7 @@
 
           function getCodes(section) {
                if (section.special) return section.special;
-               return Array.from({ length: 20 }, (_, index) => `${section.code}${index + 1}`);
+               return Array.from({ length: 20 }, (_, i) => `${section.code}${i + 1}`);
           }
 
           function stickerType(code) {
@@ -1501,12 +1806,9 @@
                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
                updateStats();
                updateSectionCounts();
-               requestFilterUpdate();
           }
 
           function render() {
-               ensureState();
-
                const album = document.getElementById('album');
                album.innerHTML = '';
 
@@ -1514,66 +1816,63 @@
                     const codes = getCodes(section);
                     const sec = document.createElement('section');
                     sec.className = `section ${collapsedSections[section.code] ? 'collapsed' : ''}`;
-                    sec.dataset.code = normalizeSearchText(section.code);
-                    sec.dataset.name = normalizeSearchText(section.name);
+                    sec.dataset.code = section.code.toLowerCase();
+                    sec.dataset.name = section.name.toLowerCase();
 
                     sec.innerHTML = `
-                         <div class="section-header" onclick="toggleSection('${section.code}')">
-                              <div class="section-title">
-                                   <span class="abbr ${section.code === 'CC' ? 'coca' : ''}">${section.code}</span>
-                                   <div>
-                                        <h2>${section.name}</h2>
-                                        <small>${codes.length} figurinhas nesta seção</small>
-                                   </div>
-                              </div>
-                              <div class="section-actions">
-                                   <span class="section-counts" id="section-count-${section.code}">0 tenho • 0 rep.</span>
-                                   <button type="button" class="toggle-section" onclick="event.stopPropagation(); toggleSection('${section.code}')">
-                                        ${collapsedSections[section.code] ? 'Abrir' : 'Fechar'}
-                                   </button>
-                              </div>
-                         </div>
-                         <div class="grid"></div>
-                    `;
+            <div class="section-header" onclick="toggleSection('${section.code}')">
+                <div class="section-title">
+                    <span class="abbr ${section.code === 'CC' ? 'coca' : ''}">${section.code}</span>
+                    <div>
+                        <h2>${section.name}</h2>
+                        <small>${codes.length} figurinhas nesta seção</small>
+                    </div>
+                </div>
+                <div class="section-actions">
+                    <span class="section-counts" id="section-count-${section.code}">0 tenho • 0 rep.</span>
+                    <button type="button" class="toggle-section" onclick="event.stopPropagation(); toggleSection('${section.code}')">
+                         ${collapsedSections[section.code] ? 'Abrir' : 'Fechar'}
+                    </button>
+                </div>
+            </div>
+            <div class="grid"></div>
+        `;
 
                     const grid = sec.querySelector('.grid');
 
                     codes.forEach(code => {
-                         const data = state[code] || { status: '', qty: 0 };
-                         const card = document.createElement('div');
-                         const isHave = data.status === 'have';
-                         const isMissing = data.status === 'missing';
+                         if (!state[code]) state[code] = { status: '', qty: 0 };
 
-                         card.className = `sticker ${data.status}`;
-                         card.dataset.code = normalizeSearchText(code);
+                         const card = document.createElement('div');
+                         card.className = `sticker ${state[code].status}`;
+                         card.dataset.code = code.toLowerCase();
+                         const isHave = state[code].status === 'have';
+                         const isMissing = state[code].status === 'missing';
 
                          card.innerHTML = `
-                              <div class="code">${code}</div>
-                              <div class="type">${stickerType(code)}</div>
+                <div class="code">${code}</div>
+                <div class="type">${stickerType(code)}</div>
 
-                              <div class="own-row">
-                                   <span class="own-label">Já tem?</span>
-                                   <button type="button" class="own-btn ${isHave ? 'active-yes' : ''}" onclick="setStatus('${code}', 'have')">Sim</button>
-                                   <button type="button" class="own-btn ${isMissing ? 'active-no' : ''}" onclick="setStatus('${code}', 'missing')">Não</button>
-                              </div>
+                <div class="own-row">
+                    <span class="own-label">Já tem?</span>
+                    <button type="button" class="own-btn ${isHave ? 'active-yes' : ''}" onclick="setStatus('${code}', 'have')">Sim</button>
+                    <button type="button" class="own-btn ${isMissing ? 'active-no' : ''}" onclick="setStatus('${code}', 'missing')">Não</button>
+                </div>
 
-                              <div class="qty-label">Repetidas</div>
-                              <div class="qty-row">
-                                   <button type="button" onclick="changeQty('${code}', -1)">−</button>
-                                   <span class="qty-display">${data.qty || 0}</span>
-                                   <button type="button" onclick="changeQty('${code}', 1)">+</button>
-                              </div>
-                         `;
-
+                <div class="qty-label">Repetidas</div>
+                <div class="qty-row">
+                    <button type="button" onclick="changeQty('${code}', -1)">−</button>
+                    <span class="qty-display">${state[code].qty || 0}</span>
+                    <button type="button" onclick="changeQty('${code}', 1)">+</button>
+                </div>
+            `;
                          grid.appendChild(card);
                     });
 
                     album.appendChild(sec);
                });
 
-               localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-               updateStats();
-               updateSectionCounts();
+               save();
                applyFilters();
           }
 
@@ -1605,16 +1904,14 @@
                     const missingPercent = total ? Math.round((missing / total) * 100) : 0;
                     const dupes = codes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
                     const el = document.getElementById(`section-count-${section.code}`);
-
-                    if (el) {
-                         el.textContent = `${have} tenho (${havePercent}%) • ${missing} não tenho (${missingPercent}%) • ${dupes} rep.`;
-                    }
+                    if (el) el.textContent = `${have} tenho (${havePercent}%) • ${missing} não tenho (${missingPercent}%) • ${dupes} rep.`;
                });
           }
 
           function setStatus(code, status) {
                if (!state[code]) state[code] = { status: '', qty: 0 };
 
+               // Se clicar de novo na mesma opção, limpa a marcação.
                state[code].status = state[code].status === status ? '' : status;
 
                render();
@@ -1628,15 +1925,164 @@
           }
 
           function changeQty(code, delta) {
-               if (!state[code]) state[code] = { status: '', qty: 0 };
                state[code].qty = Math.max(0, (Number(state[code].qty) || 0) + delta);
                save();
                render();
           }
 
-          function getOrderedDupes() {
-               return ALL_CODES.filter(code => Number(state[code]?.qty) > 0);
+          function getAllCodes() {
+               return SECTIONS.flatMap(getCodes);
           }
+
+          function getOrderedDupes() {
+               return getAllCodes().filter(code => Number(state[code]?.qty) > 0);
+          }
+
+          function getOrderedHaveCodes() {
+               return getAllCodes().filter(code => state[code]?.status === 'have');
+          }
+
+          function getOrderedMissingCodes() {
+               return getAllCodes().filter(code => state[code]?.status === 'missing');
+          }
+
+          function renderPrintAlbumPage(sections, pageNumber, totalPages) {
+               const maxCols = 20;
+               const numberHeader = Array.from({ length: maxCols }, (_, index) => `<th>${index + 1}</th>`).join('');
+
+               const rows = sections.map(section => {
+                    const codes = getCodes(section);
+
+                    const cells = Array.from({ length: maxCols }, (_, index) => {
+                         const code = codes[index];
+
+                         if (!code) return '<td></td>';
+
+                         const data = state[code] || { status: '', qty: 0 };
+                         const statusClass = data.status === 'have' ? 'have' : data.status === 'missing' ? 'missing' : 'blank';
+                         const shortCode = section.code === 'FWC'
+                              ? code.replace('FWC', 'F')
+                              : section.code === 'CC'
+                                   ? code
+                                   : code.replace(section.code, '');
+                         const rep = Number(data.qty || 0) > 0 ? `<span class="print-rep-badge">R${data.qty}</span>` : '';
+
+                         return `<td class="print-album-cell ${statusClass}">${shortCode}${rep}</td>`;
+                    }).join('');
+
+                    return `
+                         <tr>
+                              <td class="print-album-country">${section.code}<small>${section.name}</small></td>
+                              ${cells}
+                         </tr>
+                    `;
+               }).join('');
+
+               return `
+                    <section class="print-block">
+                         <h2>Mapa do álbum</h2>
+                         <p class="print-description">Visualização como no controle original: verde = já tenho, vermelho = não tenho, branco = sem marcar e amarelo = repetida.</p>
+                         <div class="print-legend">
+                              <span><i class="print-dot print-dot-blank"></i>Sem marcar</span>
+                              <span><i class="print-dot print-dot-have"></i>Já tenho</span>
+                              <span><i class="print-dot print-dot-missing"></i>Não tenho</span>
+                              <span><i class="print-dot print-dot-dupe"></i>R = repetidas</span>
+                         </div>
+                         <table class="print-album-table">
+                              <thead>
+                                   <tr>
+                                        <th class="print-album-country">Seleção</th>
+                                        ${numberHeader}
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   ${rows}
+                              </tbody>
+                         </table>
+                    </section>
+                    <div class="print-footer">Página ${pageNumber} de ${totalPages} • Mapa do álbum com tenho e não tenho misturados</div>
+               `;
+          }
+
+          function chunkSectionsForPrint(size) {
+               const chunks = [];
+
+               for (let index = 0; index < SECTIONS.length; index += size) {
+                    chunks.push(SECTIONS.slice(index, index + size));
+               }
+
+               return chunks;
+          }
+
+          function renderPrintGroup(title, description, codes, mode) {
+               if (!codes.length) {
+                    return `
+                         <section class="print-block">
+                              <h2>${title}</h2>
+                              <p class="print-empty">${description}</p>
+                         </section>
+                    `;
+               }
+
+               const groups = SECTIONS.map(section => {
+                    const sectionCodes = getCodes(section).filter(code => codes.includes(code));
+
+                    if (!sectionCodes.length) return '';
+
+                    const items = sectionCodes.map(code => {
+                         const qty = Number(state[code]?.qty || 0);
+                         const label = mode === 'dupes' ? `${code} x${qty}` : code;
+                         const chipClass = mode === 'dupes' ? 'print-chip-dupe' : mode === 'missing' ? 'print-chip-missing' : 'print-chip-have';
+                         return `<span class="print-chip ${chipClass}">${label}</span>`;
+                    }).join('');
+
+                    return `
+                         <div class="print-group">
+                              <div class="print-group-title">
+                                   <strong>${section.code}</strong>
+                                   <span>${section.name}</span>
+                              </div>
+                              <div class="print-chip-list">${items}</div>
+                         </div>
+                    `;
+               }).join('');
+
+               return `
+                    <section class="print-block">
+                         <h2>${title}</h2>
+                         <p class="print-description">${description}</p>
+                         <div class="print-groups">${groups}</div>
+                    </section>
+               `;
+          }
+
+
+          function updateStats() {
+               const allCodes = SECTIONS.flatMap(getCodes);
+               const have = allCodes.filter(code => state[code]?.status === 'have').length;
+               const missing = allCodes.filter(code => state[code]?.status === 'missing').length;
+               const dupes = getOrderedDupes();
+               const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
+
+               const havePercent = allCodes.length ? Math.round((have / allCodes.length) * 100) : 0;
+               const missingPercent = allCodes.length ? Math.round((missing / allCodes.length) * 100) : 0;
+
+               document.getElementById('totalStickers').textContent = allCodes.length;
+               document.getElementById('haveCount').textContent = have;
+               document.getElementById('missingCount').textContent = missing;
+               document.getElementById('havePercent').textContent = `${havePercent}%`;
+               document.getElementById('missingPercent').textContent = `${missingPercent}%`;
+               document.getElementById('dupeKinds').textContent = dupes.length;
+               document.getElementById('dupeTotal').textContent = dupeTotal;
+
+               const dupesList = document.getElementById('dupesList');
+               if (!dupes.length) {
+                    dupesList.innerHTML = '<span class="empty">Nenhuma repetida marcada ainda.</span>';
+               } else {
+                    dupesList.innerHTML = dupes.map(code => `<span class="dupe-tag">${code} × ${state[code].qty}</span>`).join('');
+               }
+          }
+
 
           function normalizeSearchText(text) {
                return String(text || '')
@@ -1645,11 +2091,6 @@
                     .replace(/[\u0300-\u036f]/g, '')
                     .replace(/ç/g, 'c')
                     .replace(/[^a-z0-9]/g, '');
-          }
-
-          function requestFilterUpdate() {
-               if (filterFrame) cancelAnimationFrame(filterFrame);
-               filterFrame = requestAnimationFrame(applyFilters);
           }
 
           function applyFilters() {
@@ -1681,31 +2122,8 @@
                });
           }
 
-          function updateStats() {
-               const have = ALL_CODES.filter(code => state[code]?.status === 'have').length;
-               const missing = ALL_CODES.filter(code => state[code]?.status === 'missing').length;
-               const dupes = getOrderedDupes();
-               const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
 
-               const havePercent = ALL_CODES.length ? Math.round((have / ALL_CODES.length) * 100) : 0;
-               const missingPercent = ALL_CODES.length ? Math.round((missing / ALL_CODES.length) * 100) : 0;
-
-               document.getElementById('totalStickers').textContent = ALL_CODES.length;
-               document.getElementById('haveCount').textContent = have;
-               document.getElementById('missingCount').textContent = missing;
-               document.getElementById('havePercent').textContent = `${havePercent}%`;
-               document.getElementById('missingPercent').textContent = `${missingPercent}%`;
-               document.getElementById('dupeKinds').textContent = dupes.length;
-               document.getElementById('dupeTotal').textContent = dupeTotal;
-
-               const dupesList = document.getElementById('dupesList');
-
-               if (!dupes.length) {
-                    dupesList.innerHTML = '<span class="empty">Nenhuma repetida marcada ainda.</span>';
-               } else {
-                    dupesList.innerHTML = dupes.map(code => `<span class="dupe-tag">${code} × ${state[code].qty}</span>`).join('');
-               }
-          }
+          let toastTimer = null;
 
           function showToast(message, type = 'success') {
                const toast = document.getElementById('toast');
@@ -1757,6 +2175,195 @@
                }
           }
 
+          function padStickerNumber(value) {
+               return String(value).padStart(2, '0');
+          }
+
+          function getStickerNumber(code) {
+               if (code === '00') return '00';
+               const match = String(code).match(/\d+$/);
+               return match ? padStickerNumber(match[0]) : code;
+          }
+
+          function formatTextNumber(code) {
+               return getStickerNumber(code);
+          }
+
+          function formatTextGroup(section, codes, includeQty = false) {
+               const emoji = SECTION_EMOJIS[section.code] || '';
+               const values = codes.map(code => {
+                    const number = formatTextNumber(code);
+                    return includeQty ? `${number} x${Number(state[code]?.qty || 0)}` : number;
+               }).join(', ');
+
+               return `${emoji} ${section.code}: ${values}`.trim();
+          }
+
+          function buildTextControl() {
+               const missingLines = SECTIONS.map(section => {
+                    const codes = getCodes(section).filter(code => state[code]?.status === 'missing');
+                    return codes.length ? formatTextGroup(section, codes) : '';
+               }).filter(Boolean);
+
+               const dupeLines = SECTIONS.map(section => {
+                    const codes = getCodes(section).filter(code => Number(state[code]?.qty || 0) > 0);
+                    return codes.length ? formatTextGroup(section, codes, true) : '';
+               }).filter(Boolean);
+
+               return [
+                    'Não tenho:',
+                    '',
+                    missingLines.length ? missingLines.join('') : 'Nenhuma figurinha marcada como não tenho.',
+                    '',
+                    '',
+                    'Repetidas:',
+                    '',
+                    dupeLines.length ? dupeLines.join('') : 'Nenhuma figurinha repetida marcada.'].join('');
+          }
+
+          function openTextExport() {
+               document.getElementById('textExportArea').value = buildTextControl();
+               document.getElementById('textExportModal').classList.add('open');
+          }
+
+          function closeTextExport() {
+               document.getElementById('textExportModal').classList.remove('open');
+          }
+
+          async function copyTextExport() {
+               const text = document.getElementById('textExportArea').value;
+               await copyTextToClipboard(text, 'Lista copiada em texto!', 'Não consegui copiar automaticamente. Copie manualmente com Ctrl+C.');
+          }
+
+          function openTradeComparator() {
+               document.getElementById('compareModal').classList.add('open');
+          }
+
+          function closeTradeComparator() {
+               document.getElementById('compareModal').classList.remove('open');
+          }
+
+          function clearTradeComparator() {
+               document.getElementById('friendDupesInput').value = '';
+               document.getElementById('compareOutput').value = '';
+          }
+
+          function openTutorial() {
+               document.getElementById('tutorialModal').classList.add('open');
+          }
+
+          function closeTutorial() {
+               document.getElementById('tutorialModal').classList.remove('open');
+          }
+
+          function getValidCodeSet() {
+               return new Set(getAllCodes());
+          }
+
+          function normalizeStickerCode(sectionCode, value) {
+               const number = Number(String(value).replace(/\D/g, ''));
+
+               if (sectionCode === 'FWC') {
+                    return number === 0 ? '00' : `FWC${number}`;
+               }
+
+               if (sectionCode === 'CC') {
+                    return `CC${number}`;
+               }
+
+               return `${sectionCode}${number}`;
+          }
+
+          function parseSectionNumbers(text, sectionCode, validCodes) {
+               const codes = [];
+               const parts = String(text || '').split(/[,;•]+/);
+
+               parts.forEach(part => {
+                    const fullCodeMatch = part.toUpperCase().match(/(FWC|CC|MEX|RSA|KOR|CZE|CAN|BIH|QAT|SUI|BRA|MAR|HAI|SCO|USA|PAR|AUS|TUR|GER|CUW|CIV|ECU|NED|JPN|SWE|TUN|BEL|EGY|IRN|NZL|ESP|CPV|KSA|URU|FRA|SEN|IRQ|NOR|ARG|ALG|AUT|JOR|POR|COD|UZB|COL|ENG|CRO|GHA|PAN)\s*0*(\d{1,2})/);
+
+                    if (fullCodeMatch) {
+                         const code = normalizeStickerCode(fullCodeMatch[1], fullCodeMatch[2]);
+                         if (validCodes.has(code)) codes.push(code);
+                         return;
+                    }
+
+                    const numberMatch = part.match(/(00|\d{1,2})/);
+                    if (!numberMatch) return;
+
+                    const code = normalizeStickerCode(sectionCode, numberMatch[1]);
+                    if (validCodes.has(code)) codes.push(code);
+               });
+
+               return codes;
+          }
+
+          function parseStickerText(rawText) {
+               const validCodes = getValidCodeSet();
+               const foundCodes = new Set();
+               const sectionCodes = SECTIONS.map(section => section.code).join('|');
+               const lines = String(rawText || '').split(/+/);
+
+               lines.forEach(line => {
+                    const sectionMatch = line.toUpperCase().match(new RegExp(`\b(${sectionCodes})\b\s*:`));
+
+                    if (sectionMatch) {
+                         const sectionCode = sectionMatch[1];
+                         const content = line.slice(line.indexOf(':') + 1);
+                         parseSectionNumbers(content, sectionCode, validCodes).forEach(code => foundCodes.add(code));
+                         return;
+                    }
+
+                    const fullCodeRegex = new RegExp(`\b(${sectionCodes})\s*0*(\d{1,2})\b`, 'gi');
+                    let match;
+
+                    while ((match = fullCodeRegex.exec(line)) !== null) {
+                         const code = normalizeStickerCode(match[1].toUpperCase(), match[2]);
+                         if (validCodes.has(code)) foundCodes.add(code);
+                    }
+               });
+
+               return getAllCodes().filter(code => foundCodes.has(code));
+          }
+
+          function formatQuickList(codes) {
+               if (!codes.length) return '';
+               if (codes.length === 1) return codes[0];
+               return `${codes.slice(0, -1).join(', ')} e ${codes[codes.length - 1]}`;
+          }
+
+          function compareTradeList() {
+               const friendText = document.getElementById('friendDupesInput').value;
+               const friendCodes = parseStickerText(friendText);
+               const missingSet = new Set(getOrderedMissingCodes());
+               const usefulCodes = friendCodes.filter(code => missingSet.has(code));
+               const total = usefulCodes.length;
+               const output = total
+                    ? `Seu amigo tem ${total} ${total === 1 ? 'figurinha repetida que está faltando' : 'figurinhas repetidas que estão faltando'} no seu álbum. ✅ Lista rápida: ${formatQuickList(usefulCodes)}.`
+                    : 'Seu amigo não tem repetidas que estejam marcadas como faltando no seu álbum. Confira se suas figurinhas faltantes estão marcadas como “Não tenho” e se o texto colado está no formato correto.';
+
+               document.getElementById('compareOutput').value = output;
+          }
+
+          async function copyCompareOutput() {
+               const text = document.getElementById('compareOutput').value.trim();
+
+               if (!text) {
+                    showToast('Compare antes de copiar.', 'error');
+                    return;
+               }
+
+               await copyTextToClipboard(text, 'Resultado copiado!', 'Não consegui copiar automaticamente. Copie manualmente com Ctrl+C.');
+          }
+
+          async function copyTextToClipboard(text, successMessage, errorMessage) {
+               try {
+                    await navigator.clipboard.writeText(text);
+                    showToast(successMessage, 'success');
+               } catch (e) {
+                    showToast(errorMessage, 'error');
+               }
+          }
+
           function openExport() {
                const data = JSON.stringify(state, null, 2);
                clearModalStatus();
@@ -1785,8 +2392,8 @@
                modalAction.onclick = pasteDataArea;
 
                const actions = document.querySelector('.modal-actions');
-               let importButton = document.getElementById('importButton');
 
+               let importButton = document.getElementById('importButton');
                if (!importButton) {
                     importButton = document.createElement('button');
                     importButton.id = 'importButton';
@@ -1796,111 +2403,70 @@
 
                importButton.style.display = '';
                importButton.textContent = 'Importar agora';
-               importButton.onclick = importNow;
+               importButton.onclick = () => {
+                    const rawData = document.getElementById('dataArea').value.trim();
+
+                    if (!rawData) {
+                         showModalStatus('Cole um backup antes de importar. O campo está vazio.', 'error');
+                         showToast('Nada para importar.', 'error');
+                         return;
+                    }
+
+                    try {
+                         const imported = JSON.parse(rawData);
+
+                         if (!imported || typeof imported !== 'object' || Array.isArray(imported)) {
+                              throw new Error('Formato inválido');
+                         }
+
+                         if (!Object.keys(imported).length) {
+                              showModalStatus('Esse backup está vazio. Cole um backup válido antes de importar.', 'error');
+                              showToast('Backup vazio.', 'error');
+                              return;
+                         }
+
+                         state = imported;
+                         save();
+                         render();
+                         showModalStatus('Controle importado com sucesso! Suas figurinhas já foram atualizadas.', 'success');
+                         showToast('Importado com sucesso!', 'success');
+                    } catch (e) {
+                         showModalStatus('JSON inválido. Verifique se você colou o backup completo exportado anteriormente.', 'error');
+                         showToast('Erro ao importar backup.', 'error');
+                    }
+               };
 
                document.getElementById('dataModal').classList.add('open');
           }
 
-          function importNow() {
-               const rawData = document.getElementById('dataArea').value.trim();
-
-               if (!rawData) {
-                    showModalStatus('Cole um backup antes de importar. O campo está vazio.', 'error');
-                    showToast('Nada para importar.', 'error');
-                    return;
-               }
-
-               try {
-                    const imported = JSON.parse(rawData);
-
-                    if (!imported || typeof imported !== 'object' || Array.isArray(imported)) {
-                         throw new Error('Formato inválido');
-                    }
-
-                    if (!Object.keys(imported).length) {
-                         showModalStatus('Esse backup está vazio. Cole um backup válido antes de importar.', 'error');
-                         showToast('Backup vazio.', 'error');
-                         return;
-                    }
-
-                    state = imported;
-                    ensureState();
-                    save();
-                    render();
-
-                    showModalStatus('Controle importado com sucesso! Suas figurinhas já foram atualizadas.', 'success');
-                    showToast('Importado com sucesso!', 'success');
-               } catch (e) {
-                    showModalStatus('JSON inválido. Verifique se você colou o backup completo exportado anteriormente.', 'error');
-                    showToast('Erro ao importar backup.', 'error');
-               }
-          }
 
           function printCompact() {
                renderPrintView();
                setTimeout(() => window.print(), 80);
           }
 
-          function getPrintShortCode(section, code) {
-               if (section.code === 'FWC') return code === '00' ? '00' : code.replace('FWC', 'F');
-               if (section.code === 'CC') return code;
-               return code.replace(section.code, '');
-          }
+          function renderPrintView() {
+               const allCodes = getAllCodes();
+               const haveCodes = getOrderedHaveCodes();
+               const missingCodes = getOrderedMissingCodes();
+               const dupes = getOrderedDupes();
+               const missing = missingCodes.length;
+               const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
+               const havePercent = allCodes.length ? Math.round((haveCodes.length / allCodes.length) * 100) : 0;
+               const missingPercent = allCodes.length ? Math.round((missing / allCodes.length) * 100) : 0;
+               const today = new Date().toLocaleDateString('pt-BR');
+               const albumChunks = chunkSectionsForPrint(24);
+               const totalPages = albumChunks.length + 1;
 
-          function renderPrintStatusChip(section, code) {
-               const data = state[code] || { status: '', qty: 0 };
-               const chipClass = data.status === 'have' ? 'print-chip-have' : data.status === 'missing' ? 'print-chip-missing' : 'print-chip-blank';
-               const qty = Number(data.qty || 0);
-               const rep = qty > 0 ? `<span class="print-chip-rep">R${qty}</span>` : '';
-
-               return `<span class="print-chip ${chipClass}">${getPrintShortCode(section, code)}${rep}</span>`;
-          }
-
-          function renderPrintDupeChip(code) {
-               const qty = Number(state[code]?.qty || 0);
-               return `<span class="print-chip print-chip-dupe">${code} x${qty}</span>`;
-          }
-
-          function renderPrintSectionGroup(section, mode) {
-               const codes = getCodes(section);
-               const items = mode === 'dupes'
-                    ? codes.filter(code => Number(state[code]?.qty) > 0).map(renderPrintDupeChip).join('')
-                    : codes.map(code => renderPrintStatusChip(section, code)).join('');
-
-               if (!items) return '';
-
-               return `
-                    <div class="print-group">
-                         <div class="print-group-title">
-                              <strong>${section.code}</strong>
-                              <span>${section.name}</span>
-                         </div>
-                         <div class="print-chip-list">${items}</div>
+               const summary = `
+                    <div class="print-summary">
+                         <div class="print-stat"><strong>${allCodes.length}</strong>Total no controle</div>
+                         <div class="print-stat"><strong>${haveCodes.length}</strong>Já tenho • ${havePercent}%</div>
+                         <div class="print-stat"><strong>${missing}</strong>Não tenho • ${missingPercent}%</div>
+                         <div class="print-stat"><strong>${dupes.length}</strong>Tipos repetidos</div>
+                         <div class="print-stat"><strong>${dupeTotal}</strong>Total repetidas</div>
                     </div>
                `;
-          }
-
-          function chunkSectionsForPrint(size) {
-               const chunks = [];
-
-               for (let index = 0; index < SECTIONS.length; index += size) {
-                    chunks.push(SECTIONS.slice(index, index + size));
-               }
-
-               return chunks;
-          }
-
-          function renderPrintView() {
-               const have = ALL_CODES.filter(code => state[code]?.status === 'have').length;
-               const missing = ALL_CODES.filter(code => state[code]?.status === 'missing').length;
-               const dupes = getOrderedDupes();
-               const dupeTotal = dupes.reduce((sum, code) => sum + Number(state[code]?.qty || 0), 0);
-
-               const havePercent = ALL_CODES.length ? Math.round((have / ALL_CODES.length) * 100) : 0;
-               const missingPercent = ALL_CODES.length ? Math.round((missing / ALL_CODES.length) * 100) : 0;
-               const today = new Date().toLocaleDateString('pt-BR');
-               const albumChunks = chunkSectionsForPrint(18);
-               const totalPages = albumChunks.length + 1;
 
                const header = `
                     <div class="print-head">
@@ -1915,43 +2481,13 @@
                     </div>
                `;
 
-               const summary = `
-                    <div class="print-summary">
-                         <div class="print-stat"><strong>${ALL_CODES.length}</strong>Total no controle</div>
-                         <div class="print-stat"><strong>${have}</strong>Já tenho • ${havePercent}%</div>
-                         <div class="print-stat"><strong>${missing}</strong>Não tenho • ${missingPercent}%</div>
-                         <div class="print-stat"><strong>${dupes.length}</strong>Tipos repetidos</div>
-                         <div class="print-stat"><strong>${dupeTotal}</strong>Total repetidas</div>
-                    </div>
-               `;
-
-               const legend = `
-                    <div class="print-legend">
-                         <span><i class="print-dot print-dot-blank"></i>Sem marcar</span>
-                         <span><i class="print-dot print-dot-have"></i>Já tenho</span>
-                         <span><i class="print-dot print-dot-missing"></i>Não tenho</span>
-                         <span><i class="print-dot print-dot-dupe"></i>R = repetidas</span>
-                    </div>
-               `;
-
                const albumPages = albumChunks.map((sections, index) => `
                     <div class="print-page">
                          ${header}
                          ${summary}
-                         <section class="print-block">
-                              <h2>Mapa do álbum</h2>
-                              <p class="print-description">Listagem unificada, mantendo juntas as figurinhas que o usuário tem, não tem e ainda não marcou.</p>
-                              ${legend}
-                              <div class="print-groups">
-                                   ${sections.map(section => renderPrintSectionGroup(section, 'album')).join('')}
-                              </div>
-                         </section>
-                         <div class="print-footer">Página ${index + 1} de ${totalPages} • Mapa do álbum</div>
+                         ${renderPrintAlbumPage(sections, index + 1, totalPages)}
                     </div>
                `).join('');
-
-               const dupeGroups = SECTIONS.map(section => renderPrintSectionGroup(section, 'dupes')).join('');
-               const dupesContent = dupeGroups || '<p class="print-empty">Nenhuma repetida marcada ainda.</p>';
 
                document.getElementById('printArea').innerHTML = `
                     ${albumPages}
@@ -1959,13 +2495,7 @@
                     <div class="print-page">
                          ${header}
                          ${summary}
-                         <section class="print-block">
-                              <h2>Repetidas para troca</h2>
-                              <p class="print-description">Listagem em ordem do álbum, seguindo a ordem dos países e das figurinhas dentro de cada seção.</p>
-                              <div class="print-groups">
-                                   ${dupesContent}
-                              </div>
-                         </section>
+                         ${renderPrintGroup('Repetidas para troca', 'Listagem em ordem do álbum, seguindo a ordem dos países e das figurinhas dentro de cada seção.', dupes, 'dupes')}
                          <div class="print-footer">Página ${totalPages} de ${totalPages} • Repetidas para troca</div>
                     </div>
                `;
@@ -1975,26 +2505,21 @@
 
           function closeModal() {
                clearModalStatus();
-
                const importButton = document.getElementById('importButton');
                if (importButton) importButton.style.display = 'none';
-
                document.getElementById('dataModal').classList.remove('open');
           }
 
           function resetAll() {
                if (!confirm('Tem certeza que quer zerar tudo?')) return;
-
                state = {};
-               collapsedSections = {};
-
                localStorage.removeItem(STORAGE_KEY);
                localStorage.removeItem(COLLAPSE_KEY);
-
+               collapsedSections = {};
                render();
           }
 
-          document.getElementById('search').addEventListener('input', requestFilterUpdate);
+          document.getElementById('search').addEventListener('input', applyFilters);
           document.getElementById('statusFilter').addEventListener('change', applyFilters);
 
           applyTheme(localStorage.getItem(THEME_KEY) || 'dark');
